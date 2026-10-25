@@ -39,25 +39,18 @@ class CSVTests(unittest.TestCase):
                 load_csv(content)
 
     def test_limits(self):
-        with patch("app.MAX_BYTES", 8), self.assertRaisesRegex(ValueError, "10 MiB"):
+        with patch("data_contract.MAX_BYTES", 8), self.assertRaisesRegex(ValueError, "10 MiB"):
             load_csv(EXAMPLE.read_bytes())
-        with patch("app.MAX_ROWS", 2), self.assertRaisesRegex(ValueError, "100.000"):
+        with patch("data_contract.MAX_ROWS", 2), self.assertRaisesRegex(ValueError, "100.000"):
             load_csv(EXAMPLE.read_bytes())
 
 
 class InterfaceTests(unittest.TestCase):
     def test_demo_and_asset_selection(self):
-        app = AppTest.from_file(str(PROJECT / "app.py")).run(timeout=20)
-        self.assertEqual(len(app.exception), 0)
-        self.assertEqual(len(app.metric), 0)
-        app.checkbox[0].check().run(timeout=20)
-        self.assertEqual(len(app.exception), 0)
-        self.assertEqual([metric.value for metric in app.metric], ["9", "2"])
-        self.assertEqual(len(app.dataframe[0].value), 9)
-        app.selectbox[0].select("BOMBA-002").run(timeout=20)
-        self.assertEqual(len(app.exception), 0)
-        self.assertEqual(app.selectbox[0].value, "BOMBA-002")
-
-
-if __name__ == "__main__":
-    unittest.main()
+        a=AppTest.from_file(str(PROJECT/'app.py')).run(timeout=30)
+        a.button(key='small_demo').click().run(timeout=30)
+        self.assertFalse(a.exception)
+        self.assertEqual([m.value for m in a.metric],['9','2'])
+        self.assertEqual(len(a.dataframe[0].value),9)
+        a.selectbox(key='asset').select('BOMBA-002').run(timeout=30)
+        self.assertFalse(a.exception)

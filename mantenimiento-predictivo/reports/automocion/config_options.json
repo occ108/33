@@ -1,0 +1,30 @@
+{
+  "theme.base": {
+    "supported": true,
+    "description": "\n        The theme that your custom theme inherits from.\n\n        This can be one of the following:\n        - \"light\": Streamlit's default light theme.\n        - \"dark\": Streamlit's default dark theme.\n        - A local file path to a TOML theme file: A local custom theme, like\n          \"themes/custom.toml\".\n        - A URL to a TOML theme file: An externally hosted custom theme, like\n          \"https://example.com/theme.toml\".\n\n        A TOML theme file must contain a [theme] table with theme options.\n        Any theme options defined in the app's config.toml file will override\n        those defined in the TOML theme file.\n    "
+  },
+  "theme.primaryColor": {
+    "supported": true,
+    "description": "\n        Primary accent color.\n    "
+  },
+  "theme.backgroundColor": {
+    "supported": true,
+    "description": "\n        Background color of the app.\n    "
+  },
+  "theme.secondaryBackgroundColor": {
+    "supported": true,
+    "description": "\n        Background color used for most interactive widgets.\n    "
+  },
+  "theme.textColor": {
+    "supported": true,
+    "description": "\n        Color used for almost all text.\n    "
+  },
+  "client.toolbarMode": {
+    "supported": true,
+    "description": "\n        Change the visibility of items in the toolbar and options menu\n        (top right of the app). The menu and toolbar contain viewer options\n        (e.g. print, record screen, theme toggle) and developer options\n        (e.g. deploy, rerun, clear cache).\n\n        Allowed values:\n        - \"auto\"      : Show the developer options if the app is accessed through\n                        localhost or through Streamlit Community Cloud as a developer.\n                        Hide them otherwise.\n        - \"developer\" : Show the developer options.\n        - \"viewer\"    : Hide the developer options, including the rerun, clear\n                        cache, and deploy button from the toolbar and menu.\n        - \"minimal\"   : Show only options set externally (e.g. through\n                        Streamlit Community Cloud) or through st.set_page_config.\n                        If there are no options left, hide the menu.\n    "
+  },
+  "server.maxUploadSize": {
+    "supported": true,
+    "description": "\n        Max size, in megabytes, for files uploaded with the file_uploader.\n    "
+  }
+}

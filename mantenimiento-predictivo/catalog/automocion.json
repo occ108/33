@@ -1,0 +1,717 @@
+{
+  "vehicles": {
+    "car": {
+      "es": "Turismo",
+      "en": "Car",
+      "de": "Pkw"
+    },
+    "van": {
+      "es": "Furgoneta",
+      "en": "Van",
+      "de": "Transporter"
+    },
+    "truck": {
+      "es": "Camión",
+      "en": "Truck",
+      "de": "Lkw"
+    },
+    "bus": {
+      "es": "Autobús",
+      "en": "Bus",
+      "de": "Bus"
+    },
+    "motorcycle": {
+      "es": "Motocicleta",
+      "en": "Motorcycle",
+      "de": "Motorrad"
+    },
+    "other": {
+      "es": "Otro",
+      "en": "Other",
+      "de": "Sonstiges"
+    }
+  },
+  "parameters": {
+    "engine_rpm": {
+      "name": {
+        "es": "Régimen del motor",
+        "en": "Engine speed",
+        "de": "Motordrehzahl"
+      },
+      "unit": "rpm",
+      "physical_min": 0,
+      "physical_max": null,
+      "plausible_min": 0,
+      "plausible_max": 12000,
+      "direction": "above",
+      "warning": null,
+      "alert": null,
+      "threshold_note": {
+        "es": "Sin valor universal; confirme el manual del fabricante.",
+        "en": "No universal value; confirm the manufacturer’s manual.",
+        "de": "Kein allgemeingültiger Wert; prüfen Sie das Herstellerhandbuch."
+      }
+    },
+    "engine_load_pct": {
+      "name": {
+        "es": "Carga del motor",
+        "en": "Engine load",
+        "de": "Motorlast"
+      },
+      "unit": "%",
+      "physical_min": 0,
+      "physical_max": 100,
+      "plausible_min": 0,
+      "plausible_max": 100,
+      "direction": "above",
+      "warning": null,
+      "alert": null,
+      "threshold_note": {
+        "es": "Sin valor universal; confirme el manual del fabricante.",
+        "en": "No universal value; confirm the manufacturer’s manual.",
+        "de": "Kein allgemeingültiger Wert; prüfen Sie das Herstellerhandbuch."
+      }
+    },
+    "coolant_temp_c": {
+      "name": {
+        "es": "Temperatura del refrigerante",
+        "en": "Coolant temperature",
+        "de": "Kühlmitteltemperatur"
+      },
+      "unit": "°C",
+      "physical_min": -273.15,
+      "physical_max": null,
+      "plausible_min": -40,
+      "plausible_max": 160,
+      "direction": "above",
+      "warning": null,
+      "alert": null,
+      "threshold_note": {
+        "es": "Sin valor universal; confirme el manual del fabricante.",
+        "en": "No universal value; confirm the manufacturer’s manual.",
+        "de": "Kein allgemeingültiger Wert; prüfen Sie das Herstellerhandbuch."
+      }
+    },
+    "oil_temp_c": {
+      "name": {
+        "es": "Temperatura del aceite",
+        "en": "Oil temperature",
+        "de": "Öltemperatur"
+      },
+      "unit": "°C",
+      "physical_min": -273.15,
+      "physical_max": null,
+      "plausible_min": -40,
+      "plausible_max": 180,
+      "direction": "above",
+      "warning": null,
+      "alert": null,
+      "threshold_note": {
+        "es": "Sin valor universal; confirme el manual del fabricante.",
+        "en": "No universal value; confirm the manufacturer’s manual.",
+        "de": "Kein allgemeingültiger Wert; prüfen Sie das Herstellerhandbuch."
+      }
+    },
+    "oil_pressure_bar": {
+      "name": {
+        "es": "Presión de aceite",
+        "en": "Oil pressure",
+        "de": "Öldruck"
+      },
+      "unit": "bar",
+      "physical_min": 0,
+      "physical_max": null,
+      "plausible_min": 0,
+      "plausible_max": 20,
+      "direction": "below",
+      "warning": null,
+      "alert": null,
+      "threshold_note": {
+        "es": "Sin valor universal; confirme el manual del fabricante.",
+        "en": "No universal value; confirm the manufacturer’s manual.",
+        "de": "Kein allgemeingültiger Wert; prüfen Sie das Herstellerhandbuch."
+      }
+    },
+    "boost_pressure_bar": {
+      "name": {
+        "es": "Presión absoluta de admisión",
+        "en": "Absolute intake pressure",
+        "de": "Absoluter Saugrohrdruck"
+      },
+      "unit": "bar (abs.)",
+      "physical_min": 0,
+      "physical_max": null,
+      "plausible_min": 0,
+      "plausible_max": 6,
+      "direction": "above",
+      "warning": null,
+      "alert": null,
+      "threshold_note": {
+        "es": "Sin valor universal; confirme el manual del fabricante.",
+        "en": "No universal value; confirm the manufacturer’s manual.",
+        "de": "Kein allgemeingültiger Wert; prüfen Sie das Herstellerhandbuch."
+      }
+    },
+    "egt_c": {
+      "name": {
+        "es": "Temperatura de gases de escape",
+        "en": "Exhaust gas temperature",
+        "de": "Abgastemperatur"
+      },
+      "unit": "°C",
+      "physical_min": -273.15,
+      "physical_max": null,
+      "plausible_min": -40,
+      "plausible_max": 1200,
+      "direction": "above",
+      "warning": null,
+      "alert": null,
+      "threshold_note": {
+        "es": "Sin valor universal; confirme el manual del fabricante.",
+        "en": "No universal value; confirm the manufacturer’s manual.",
+        "de": "Kein allgemeingültiger Wert; prüfen Sie das Herstellerhandbuch."
+      }
+    },
+    "dpf_diff_pressure_kpa": {
+      "name": {
+        "es": "Presión diferencial del DPF",
+        "en": "DPF differential pressure",
+        "de": "Differenzdruck am Dieselpartikelfilter"
+      },
+      "unit": "kPa",
+      "physical_min": 0,
+      "physical_max": null,
+      "plausible_min": 0,
+      "plausible_max": 100,
+      "direction": "above",
+      "warning": null,
+      "alert": null,
+      "threshold_note": {
+        "es": "Sin valor universal; confirme el manual del fabricante.",
+        "en": "No universal value; confirm the manufacturer’s manual.",
+        "de": "Kein allgemeingültiger Wert; prüfen Sie das Herstellerhandbuch."
+      }
+    },
+    "battery_voltage_v": {
+      "name": {
+        "es": "Tensión de batería",
+        "en": "Battery voltage",
+        "de": "Batteriespannung"
+      },
+      "unit": "V",
+      "physical_min": 0,
+      "physical_max": null,
+      "plausible_min": 0,
+      "plausible_max": 60,
+      "direction": "below",
+      "warning": null,
+      "alert": null,
+      "threshold_note": {
+        "es": "Sin valor universal; confirme el manual del fabricante.",
+        "en": "No universal value; confirm the manufacturer’s manual.",
+        "de": "Kein allgemeingültiger Wert; prüfen Sie das Herstellerhandbuch."
+      }
+    },
+    "gearbox_oil_temp_c": {
+      "name": {
+        "es": "Temperatura del aceite de transmisión",
+        "en": "Transmission oil temperature",
+        "de": "Getriebeöltemperatur"
+      },
+      "unit": "°C",
+      "physical_min": -273.15,
+      "physical_max": null,
+      "plausible_min": -40,
+      "plausible_max": 180,
+      "direction": "above",
+      "warning": null,
+      "alert": null,
+      "threshold_note": {
+        "es": "Sin valor universal; confirme el manual del fabricante.",
+        "en": "No universal value; confirm the manufacturer’s manual.",
+        "de": "Kein allgemeingültiger Wert; prüfen Sie das Herstellerhandbuch."
+      }
+    },
+    "brake_temp_c": {
+      "name": {
+        "es": "Temperatura de freno",
+        "en": "Brake temperature",
+        "de": "Bremstemperatur"
+      },
+      "unit": "°C",
+      "physical_min": -273.15,
+      "physical_max": null,
+      "plausible_min": -40,
+      "plausible_max": 1000,
+      "direction": "above",
+      "warning": null,
+      "alert": null,
+      "threshold_note": {
+        "es": "Sin valor universal; confirme el manual del fabricante.",
+        "en": "No universal value; confirm the manufacturer’s manual.",
+        "de": "Kein allgemeingültiger Wert; prüfen Sie das Herstellerhandbuch."
+      }
+    },
+    "brake_pad_mm": {
+      "name": {
+        "es": "Espesor de pastilla",
+        "en": "Brake pad thickness",
+        "de": "Bremsbelagstärke"
+      },
+      "unit": "mm",
+      "physical_min": 0,
+      "physical_max": null,
+      "plausible_min": 0,
+      "plausible_max": 40,
+      "direction": "below",
+      "warning": null,
+      "alert": null,
+      "threshold_note": {
+        "es": "Sin valor universal; confirme el manual del fabricante.",
+        "en": "No universal value; confirm the manufacturer’s manual.",
+        "de": "Kein allgemeingültiger Wert; prüfen Sie das Herstellerhandbuch."
+      }
+    },
+    "tire_pressure_bar": {
+      "name": {
+        "es": "Presión de neumático",
+        "en": "Tyre pressure",
+        "de": "Reifendruck"
+      },
+      "unit": "bar",
+      "physical_min": 0,
+      "physical_max": null,
+      "plausible_min": 0,
+      "plausible_max": 20,
+      "direction": "both",
+      "warning": null,
+      "alert": null,
+      "threshold_note": {
+        "es": "Sin valor universal; confirme el manual del fabricante.",
+        "en": "No universal value; confirm the manufacturer’s manual.",
+        "de": "Kein allgemeingültiger Wert; prüfen Sie das Herstellerhandbuch."
+      }
+    },
+    "tire_tread_mm": {
+      "name": {
+        "es": "Profundidad de dibujo",
+        "en": "Tyre tread depth",
+        "de": "Reifenprofiltiefe"
+      },
+      "unit": "mm",
+      "physical_min": 0,
+      "physical_max": null,
+      "plausible_min": 0,
+      "plausible_max": 40,
+      "direction": "below",
+      "warning": null,
+      "alert": null,
+      "threshold_note": {
+        "es": "Sin valor universal; confirme el manual del fabricante.",
+        "en": "No universal value; confirm the manufacturer’s manual.",
+        "de": "Kein allgemeingültiger Wert; prüfen Sie das Herstellerhandbuch."
+      }
+    },
+    "fuel_consumption_l_100km": {
+      "name": {
+        "es": "Consumo de combustible",
+        "en": "Fuel consumption",
+        "de": "Kraftstoffverbrauch"
+      },
+      "unit": "L/100 km",
+      "physical_min": 0,
+      "physical_max": null,
+      "plausible_min": 0,
+      "plausible_max": 200,
+      "direction": "above",
+      "warning": null,
+      "alert": null,
+      "threshold_note": {
+        "es": "Sin valor universal; confirme el manual del fabricante.",
+        "en": "No universal value; confirm the manufacturer’s manual.",
+        "de": "Kein allgemeingültiger Wert; prüfen Sie das Herstellerhandbuch."
+      }
+    },
+    "battery_soh_pct": {
+      "name": {
+        "es": "Estado de salud de batería",
+        "en": "Battery state of health",
+        "de": "Batteriegesundheitszustand"
+      },
+      "unit": "%",
+      "physical_min": 0,
+      "physical_max": 100,
+      "plausible_min": 0,
+      "plausible_max": 100,
+      "direction": "below",
+      "warning": null,
+      "alert": null,
+      "threshold_note": {
+        "es": "Sin valor universal; confirme el manual del fabricante.",
+        "en": "No universal value; confirm the manufacturer’s manual.",
+        "de": "Kein allgemeingültiger Wert; prüfen Sie das Herstellerhandbuch."
+      }
+    },
+    "chain_elongation_pct": {
+      "name": {
+        "es": "Elongación de cadena",
+        "en": "Chain elongation",
+        "de": "Kettenlängung"
+      },
+      "unit": "%",
+      "physical_min": 0,
+      "physical_max": null,
+      "plausible_min": 0,
+      "plausible_max": 10,
+      "direction": "above",
+      "warning": null,
+      "alert": null,
+      "threshold_note": {
+        "es": "Sin valor universal; confirme el manual del fabricante.",
+        "en": "No universal value; confirm the manufacturer’s manual.",
+        "de": "Kein allgemeingültiger Wert; prüfen Sie das Herstellerhandbuch."
+      }
+    }
+  },
+  "components": {
+    "engine": {
+      "name": {
+        "es": "Motor",
+        "en": "Engine",
+        "de": "Motor"
+      },
+      "description": {
+        "es": "Seguimiento de motor; confirme aplicabilidad e intervalos con el fabricante.",
+        "en": "Monitoring of engine; confirm applicability and service intervals with the manufacturer.",
+        "de": "Überwachung: Motor. Prüfen Sie Eignung und Wartungsintervalle anhand der Herstellerangaben."
+      },
+      "vehicles": [
+        "car",
+        "van",
+        "truck",
+        "bus",
+        "motorcycle",
+        "other"
+      ],
+      "parameters": [
+        "engine_rpm",
+        "engine_load_pct",
+        "fuel_consumption_l_100km"
+      ],
+      "usage_metric": "km",
+      "reference_interval": null,
+      "critical": false
+    },
+    "lubrication": {
+      "name": {
+        "es": "Lubricación",
+        "en": "Lubrication",
+        "de": "Schmierung"
+      },
+      "description": {
+        "es": "Seguimiento de lubricación; confirme aplicabilidad e intervalos con el fabricante.",
+        "en": "Monitoring of lubrication; confirm applicability and service intervals with the manufacturer.",
+        "de": "Überwachung: Schmierung. Prüfen Sie Eignung und Wartungsintervalle anhand der Herstellerangaben."
+      },
+      "vehicles": [
+        "car",
+        "van",
+        "truck",
+        "bus",
+        "motorcycle",
+        "other"
+      ],
+      "parameters": [
+        "oil_temp_c",
+        "oil_pressure_bar"
+      ],
+      "usage_metric": "km",
+      "reference_interval": null,
+      "critical": false
+    },
+    "cooling": {
+      "name": {
+        "es": "Refrigeración",
+        "en": "Cooling",
+        "de": "Kühlung"
+      },
+      "description": {
+        "es": "Seguimiento de refrigeración; confirme aplicabilidad e intervalos con el fabricante.",
+        "en": "Monitoring of cooling; confirm applicability and service intervals with the manufacturer.",
+        "de": "Überwachung: Kühlung. Prüfen Sie Eignung und Wartungsintervalle anhand der Herstellerangaben."
+      },
+      "vehicles": [
+        "car",
+        "van",
+        "truck",
+        "bus",
+        "motorcycle",
+        "other"
+      ],
+      "parameters": [
+        "coolant_temp_c"
+      ],
+      "usage_metric": "km",
+      "reference_interval": null,
+      "critical": false
+    },
+    "intake": {
+      "name": {
+        "es": "Admisión y turbo",
+        "en": "Intake and turbo",
+        "de": "Ansaugung und Turbolader"
+      },
+      "description": {
+        "es": "Seguimiento de admisión y turbo; confirme aplicabilidad e intervalos con el fabricante.",
+        "en": "Monitoring of intake and turbo; confirm applicability and service intervals with the manufacturer.",
+        "de": "Überwachung: Ansaugung und Turbolader. Prüfen Sie Eignung und Wartungsintervalle anhand der Herstellerangaben."
+      },
+      "vehicles": [
+        "car",
+        "van",
+        "truck",
+        "bus",
+        "motorcycle",
+        "other"
+      ],
+      "parameters": [
+        "boost_pressure_bar"
+      ],
+      "usage_metric": "km",
+      "reference_interval": null,
+      "critical": false
+    },
+    "fuel": {
+      "name": {
+        "es": "Combustible",
+        "en": "Fuel system",
+        "de": "Kraftstoffsystem"
+      },
+      "description": {
+        "es": "Seguimiento de combustible; confirme aplicabilidad e intervalos con el fabricante.",
+        "en": "Monitoring of fuel system; confirm applicability and service intervals with the manufacturer.",
+        "de": "Überwachung: Kraftstoffsystem. Prüfen Sie Eignung und Wartungsintervalle anhand der Herstellerangaben."
+      },
+      "vehicles": [
+        "car",
+        "van",
+        "truck",
+        "bus",
+        "motorcycle",
+        "other"
+      ],
+      "parameters": [
+        "fuel_consumption_l_100km"
+      ],
+      "usage_metric": "km",
+      "reference_interval": null,
+      "critical": false
+    },
+    "exhaust": {
+      "name": {
+        "es": "Escape, catalizador, DPF y SCR/AdBlue",
+        "en": "Exhaust, catalyst, DPF and SCR/AdBlue",
+        "de": "Abgas, Katalysator, DPF und SCR/AdBlue"
+      },
+      "description": {
+        "es": "Seguimiento de escape, catalizador, dpf y scr/adblue; confirme aplicabilidad e intervalos con el fabricante.",
+        "en": "Monitoring of exhaust, catalyst, dpf and scr/adblue; confirm applicability and service intervals with the manufacturer.",
+        "de": "Überwachung: Abgas, Katalysator, DPF und SCR/AdBlue. Prüfen Sie Eignung und Wartungsintervalle anhand der Herstellerangaben."
+      },
+      "vehicles": [
+        "car",
+        "van",
+        "truck",
+        "bus",
+        "motorcycle",
+        "other"
+      ],
+      "parameters": [
+        "egt_c",
+        "dpf_diff_pressure_kpa"
+      ],
+      "usage_metric": "km",
+      "reference_interval": null,
+      "critical": false
+    },
+    "transmission": {
+      "name": {
+        "es": "Transmisión y embrague",
+        "en": "Transmission and clutch",
+        "de": "Getriebe und Kupplung"
+      },
+      "description": {
+        "es": "Seguimiento de transmisión y embrague; confirme aplicabilidad e intervalos con el fabricante.",
+        "en": "Monitoring of transmission and clutch; confirm applicability and service intervals with the manufacturer.",
+        "de": "Überwachung: Getriebe und Kupplung. Prüfen Sie Eignung und Wartungsintervalle anhand der Herstellerangaben."
+      },
+      "vehicles": [
+        "car",
+        "van",
+        "truck",
+        "bus",
+        "motorcycle",
+        "other"
+      ],
+      "parameters": [
+        "gearbox_oil_temp_c"
+      ],
+      "usage_metric": "km",
+      "reference_interval": null,
+      "critical": false
+    },
+    "brakes": {
+      "name": {
+        "es": "Frenos",
+        "en": "Brakes",
+        "de": "Bremsen"
+      },
+      "description": {
+        "es": "Seguimiento de frenos; confirme aplicabilidad e intervalos con el fabricante.",
+        "en": "Monitoring of brakes; confirm applicability and service intervals with the manufacturer.",
+        "de": "Überwachung: Bremsen. Prüfen Sie Eignung und Wartungsintervalle anhand der Herstellerangaben."
+      },
+      "vehicles": [
+        "car",
+        "van",
+        "truck",
+        "bus",
+        "motorcycle",
+        "other"
+      ],
+      "parameters": [
+        "brake_temp_c",
+        "brake_pad_mm"
+      ],
+      "usage_metric": "km",
+      "reference_interval": null,
+      "critical": true
+    },
+    "tires": {
+      "name": {
+        "es": "Neumáticos",
+        "en": "Tyres",
+        "de": "Reifen"
+      },
+      "description": {
+        "es": "Seguimiento de neumáticos; confirme aplicabilidad e intervalos con el fabricante.",
+        "en": "Monitoring of tyres; confirm applicability and service intervals with the manufacturer.",
+        "de": "Überwachung: Reifen. Prüfen Sie Eignung und Wartungsintervalle anhand der Herstellerangaben."
+      },
+      "vehicles": [
+        "car",
+        "van",
+        "truck",
+        "bus",
+        "motorcycle",
+        "other"
+      ],
+      "parameters": [
+        "tire_pressure_bar",
+        "tire_tread_mm"
+      ],
+      "usage_metric": "km",
+      "reference_interval": null,
+      "critical": true
+    },
+    "suspension": {
+      "name": {
+        "es": "Suspensión y dirección",
+        "en": "Suspension and steering",
+        "de": "Fahrwerk und Lenkung"
+      },
+      "description": {
+        "es": "Seguimiento de suspensión y dirección; confirme aplicabilidad e intervalos con el fabricante.",
+        "en": "Monitoring of suspension and steering; confirm applicability and service intervals with the manufacturer.",
+        "de": "Überwachung: Fahrwerk und Lenkung. Prüfen Sie Eignung und Wartungsintervalle anhand der Herstellerangaben."
+      },
+      "vehicles": [
+        "car",
+        "van",
+        "truck",
+        "bus",
+        "motorcycle",
+        "other"
+      ],
+      "parameters": [],
+      "usage_metric": "km",
+      "reference_interval": null,
+      "critical": true
+    },
+    "electrical": {
+      "name": {
+        "es": "Sistema eléctrico y batería",
+        "en": "Electrical system and battery",
+        "de": "Elektrik und Batterie"
+      },
+      "description": {
+        "es": "Seguimiento de sistema eléctrico y batería; confirme aplicabilidad e intervalos con el fabricante.",
+        "en": "Monitoring of electrical system and battery; confirm applicability and service intervals with the manufacturer.",
+        "de": "Überwachung: Elektrik und Batterie. Prüfen Sie Eignung und Wartungsintervalle anhand der Herstellerangaben."
+      },
+      "vehicles": [
+        "car",
+        "van",
+        "truck",
+        "bus",
+        "motorcycle",
+        "other"
+      ],
+      "parameters": [
+        "battery_voltage_v",
+        "battery_soh_pct"
+      ],
+      "usage_metric": "months",
+      "reference_interval": null,
+      "critical": false
+    },
+    "chain": {
+      "name": {
+        "es": "Transmisión por cadena",
+        "en": "Chain drive",
+        "de": "Kettenantrieb"
+      },
+      "description": {
+        "es": "Seguimiento de transmisión por cadena; confirme aplicabilidad e intervalos con el fabricante.",
+        "en": "Monitoring of chain drive; confirm applicability and service intervals with the manufacturer.",
+        "de": "Überwachung: Kettenantrieb. Prüfen Sie Eignung und Wartungsintervalle anhand der Herstellerangaben."
+      },
+      "vehicles": [
+        "motorcycle"
+      ],
+      "parameters": [
+        "chain_elongation_pct"
+      ],
+      "usage_metric": "km",
+      "reference_interval": null,
+      "critical": false
+    },
+    "electric": {
+      "name": {
+        "es": "Tracción eléctrica e híbrida",
+        "en": "Electric and hybrid drive",
+        "de": "Elektro- und Hybridantrieb"
+      },
+      "description": {
+        "es": "Seguimiento de tracción eléctrica e híbrida; confirme aplicabilidad e intervalos con el fabricante.",
+        "en": "Monitoring of electric and hybrid drive; confirm applicability and service intervals with the manufacturer.",
+        "de": "Überwachung: Elektro- und Hybridantrieb. Prüfen Sie Eignung und Wartungsintervalle anhand der Herstellerangaben."
+      },
+      "vehicles": [
+        "car",
+        "van",
+        "truck",
+        "bus",
+        "motorcycle",
+        "other"
+      ],
+      "parameters": [
+        "battery_soh_pct",
+        "battery_voltage_v"
+      ],
+      "usage_metric": "cycles",
+      "reference_interval": null,
+      "critical": false
+    }
+  }
+}

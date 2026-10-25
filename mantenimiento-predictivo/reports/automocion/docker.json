@@ -1,0 +1,9 @@
+{
+  "build": "passed",
+  "runtime_512_mib": "passed",
+  "languages_and_state": "passed",
+  "image_matches_final_source_hashes": true,
+  "image_size_mib": 727.9024839401245,
+  "additional_dependencies": [],
+  "note": "Verified HTTPS wheels mounted for offline BuildKit install. Only current-task temporary cache was removed after disk exhaustion."
+}

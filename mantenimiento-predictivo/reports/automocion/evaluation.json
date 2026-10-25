@@ -1,0 +1,60 @@
+{
+  "seed": 84,
+  "split": "30 days initial reference; last60 days causal online test",
+  "tp": 120,
+  "fp": 4,
+  "fn": 0,
+  "precision": 0.967741935483871,
+  "recall": 1.0,
+  "events_detected": 60,
+  "events_missed": 0,
+  "mean_delay_hours": 0.0,
+  "forecasts": [
+    {
+      "asset": "CAR-01",
+      "sensor": "brake_pad_mm",
+      "direction": "below",
+      "status": "estimated",
+      "km": 77160.39047703786,
+      "low_km": 76087.02598035258,
+      "high_km": 78352.47206173892
+    },
+    {
+      "asset": "VAN-01",
+      "sensor": "battery_voltage_v",
+      "direction": "below",
+      "status": "estimated",
+      "km": 73887.3487563335,
+      "low_km": 72916.00803386244,
+      "high_km": 74943.81459549512
+    },
+    {
+      "asset": "TRUCK-01",
+      "sensor": "coolant_temp_c",
+      "direction": "above",
+      "status": "estimated",
+      "km": 73008.80954933848,
+      "low_km": 72135.4762725273,
+      "high_km": 74018.99521517052
+    },
+    {
+      "asset": "MOTO-01",
+      "sensor": "tire_pressure_bar",
+      "direction": "below",
+      "status": "estimated",
+      "km": 63344.07858142717,
+      "low_km": 62724.965830008354,
+      "high_km": 63999.165785454396
+    },
+    {
+      "asset": "TRUCK-01",
+      "sensor": "dpf_diff_pressure_kpa",
+      "direction": "above",
+      "status": "estimated",
+      "km": 67274.97663337854,
+      "low_km": 66544.25841452468,
+      "high_km": 68030.29668443678
+    }
+  ],
+  "limitations": "Synthetic spikes evaluated separately from gradual trends. Demonstration thresholds only; not OEM limits. Not real-failure validation."
+}

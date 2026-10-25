@@ -1,0 +1,38 @@
+[
+  {
+    "lang": "es",
+    "width": 1440,
+    "horizontal_overflow": false,
+    "page_errors": []
+  },
+  {
+    "lang": "es",
+    "width": 390,
+    "horizontal_overflow": false,
+    "page_errors": []
+  },
+  {
+    "lang": "en",
+    "width": 1440,
+    "horizontal_overflow": false,
+    "page_errors": []
+  },
+  {
+    "lang": "en",
+    "width": 390,
+    "horizontal_overflow": false,
+    "page_errors": []
+  },
+  {
+    "lang": "de",
+    "width": 1440,
+    "horizontal_overflow": false,
+    "page_errors": []
+  },
+  {
+    "lang": "de",
+    "width": 390,
+    "horizontal_overflow": false,
+    "page_errors": []
+  }
+]

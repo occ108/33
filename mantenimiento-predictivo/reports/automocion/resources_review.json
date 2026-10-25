@@ -1,0 +1,14 @@
+[
+  {
+    "url": "https://archive.ics.uci.edu/api/dataset?id=421",
+    "http": 200,
+    "included": false,
+    "reason": "No independently verified timestamp/unit/licence combination for direct import."
+  },
+  {
+    "url": "https://ocslab.hksecurity.net/Datasets/car-hacking-dataset",
+    "http": 200,
+    "included": false,
+    "reason": "No independently verified timestamp/unit/licence combination for direct import."
+  }
+]

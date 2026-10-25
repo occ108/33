@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 import numpy as np
 import pandas as pd
 
-SENSORS = ("temperature_c", "vibration_mm_s", "pressure_bar")
+from automotive import SENSORS
 _BLOCK_SIZE = 1024
 _NUMERICAL_FLOOR = 1e-9
 

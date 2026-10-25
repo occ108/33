@@ -13,3 +13,16 @@
 !maintenance.py
 !resources/
 !resources/**
+
+!automotive.py
+!data_contract.py
+!i18n.py
+!vehicle_analysis.py
+!catalog/
+!catalog/**
+!locales/
+!locales/**
+!assets/
+!assets/**
+!.streamlit/
+!.streamlit/config.toml

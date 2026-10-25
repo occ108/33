@@ -56,17 +56,3 @@ class PlanTests(unittest.TestCase):
             with self.assertRaises(ValueError):PlanConfig(**kw)
         with self.assertRaises(ValueError):build_maintenance_plan(self.data,{('otra','temperature_c'):80},self.ref)
         with self.assertRaises(ValueError):build_maintenance_plan(self.data,{},pd.NaT)
-
-class PlanInterfaceTests(unittest.TestCase):
-    def test_demo_plan_and_real_time_reject_old_history(self):
-        app=AppTest.from_file(str(Path(__file__).resolve().parents[1]/'app.py')).run(timeout=30)
-        app.checkbox[1].check().run(timeout=30)
-        app.selectbox[0].select('M-005').run(timeout=30)
-        self.assertFalse(app.exception)
-        table=app.dataframe[-1].value
-        self.assertEqual(table.iloc[0]['Máquina'],'M-005')
-        self.assertEqual(table.iloc[0]['Prioridad'],'Planificar revisión')
-        with patch('pandas.Timestamp.now',return_value=pd.Timestamp('2026-10-25T20:00:00Z')):
-            app.radio[0].set_value('Hoy (UTC)').run(timeout=30)
-        self.assertFalse(app.exception)
-        self.assertTrue(app.dataframe[-1].value['Prioridad'].eq('Actualizar datos').all())

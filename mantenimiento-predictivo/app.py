@@ -1,108 +1,211 @@
-"""Interfaz de la fase 2: datos, indicios de anomalía y proyecciones orientativas."""
-
-import csv
-from dataclasses import asdict
-from hashlib import sha256
-from io import BytesIO, StringIO
+"""Axion: session-local multilingual maintenance review."""
 from pathlib import Path
-
-import numpy as np
+from dataclasses import asdict
+import json
+import hashlib
 import pandas as pd
-import streamlit as st
+import numpy as np
 import altair as alt
-
-from analysis import AnalysisConfig, ForecastConfig, analyze_anomalies, estimate_maintenance
+import streamlit as st
+from automotive import CATALOG,PARAMETERS,SENSORS,LEGACY
+from data_contract import load_csv,DataError,MAX_BYTES,MAX_ROWS
+from i18n import translate,t,number,date,initial_language
+from analysis import analyze_anomalies,AnalysisConfig
+from vehicle_analysis import forecast_vehicle
 from exports import safe_csv
-from catalog import render_catalog
-from maintenance import PlanConfig, build_maintenance_plan
+from maintenance import build_maintenance_plan
+from catalog import load_catalog
+ROOT=Path(__file__).parent
+EXAMPLE=ROOT/'examples/sensores_demo.csv'
 
+def main():
+ st.set_page_config(page_title='Axion',page_icon=str(ROOT/'assets/favicon.png'),layout='wide')
+ if 'lang' not in st.session_state:
+  st.session_state.lang=initial_language(st.query_params.get('lang'),st.context.headers.get('Accept-Language',''))
+ lang=st.session_state.lang
+ st.logo(str(ROOT/'assets/logo.svg'))
+ st.radio(t('language'),['es','en','de'],horizontal=True,format_func=lambda k,locale=lang:translate(locale,'language_'+k),key='language_choice',index=['es','en','de'].index(lang),on_change=change_language)
+ lang=st.session_state.lang
+ st.markdown(f'<h1 style="font-size:1.8rem;margin-bottom:0">{t("product")}</h1>',unsafe_allow_html=True)
+ st.caption(t('tagline'))
+ st.info(t('honesty'))
+ vehicle=st.selectbox(t('vehicle'),list(CATALOG['vehicles']),format_func=lambda k:CATALOG['vehicles'][k][lang],key='vehicle')
+ options=[k for k,c in CATALOG['components'].items() if vehicle in c['vehicles']]
+ component=st.selectbox(t('component'),options,format_func=lambda k:CATALOG['components'][k]['name'][lang],key='component')
+ spec=CATALOG['components'][component]
+ st.caption(spec['description'][lang])
+ if spec['critical']:st.warning(t('critical'))
+ st.caption(t('interval',metric=spec['usage_metric']))
+ cols=spec['parameters']
+ template=pd.DataFrame(columns=['timestamp','asset_id','vehicle_type','component','odometer_km','operating_hours']+cols).to_csv(index=False).encode()
+ st.caption(t('unit_legend',columns=' · '.join(f'{c} [{PARAMETERS[c]["unit"]}]' for c in cols)))
+ if not cols:st.info(t('no_parameters'))
+ with st.container(border=True):
+  uploaded=st.file_uploader(t('upload'),type=['csv'],key='csv_upload')
+  if uploaded is not None:
+   raw=uploaded.getvalue();digest=hashlib.sha256(raw).hexdigest()
+   if digest!=st.session_state.get('upload_digest'):
+    st.session_state.upload_digest=digest;st.session_state.content=raw;st.session_state.synthetic=False
+  if st.button(t('demo'),key='demo',type='primary'):
+   st.session_state.content=(ROOT/'examples/vehicles/fleet.csv').read_bytes();st.session_state.synthetic=True
+   st.session_state.sensor='brake_pad_mm'
+  st.download_button(t('template'),template,'template.csv','text/csv',key='template')
+ st.caption(t('privacy'));st.caption(t('cold'))
+ if 'content' not in st.session_state:
+  st.info(t('empty'));render_resources(lang);return
+ try:
+  df=load_csv(st.session_state.content)
+ except DataError as error:
+  st.error(t(error.code,**error.params));render_resources(lang);return
+ st.session_state.validated_data=df
+ if st.session_state.get('synthetic'):st.caption(t('synthetic'))
+ for code,params in df.attrs.get('warnings',[]):st.warning(t(code,**params))
+ a,b=st.columns(2);a.metric(t('rows'),number(len(df),lang),border=True);b.metric(t('assets'),number(df.asset_id.nunique(),lang),border=True)
+ asset=st.selectbox(t('asset'),df.asset_id.unique().tolist(),key='asset')
+ sensors=[s for s in SENSORS if s in df]
+ sensor=st.selectbox(t('sensor'),sensors,format_func=lambda k:PARAMETERS[k]['name'][lang] if k in PARAMETERS else t(k),key='sensor')
+ group=df[df.asset_id.eq(asset)]
+ if any(c['critical'] and sensor in c['parameters'] for c in CATALOG['components'].values()):st.warning(t('critical'))
+ if 'component' in group and CATALOG['components'][group.component.iloc[-1]]['critical']:st.warning(t('critical'))
+ with st.sidebar:
+  st.header(t('controls'))
+  window=st.number_input(t('window'),24,336,48,24,key='window')
+  sensitivity=st.number_input(t('sensitivity'),1.,20.,4.5,.5,key='sensitivity')
+  st.caption(t('oem'))
+  setting=f'{hashlib.sha256(st.session_state.content).hexdigest()[:12]}:{asset}:{sensor}'
+  enabled=st.checkbox(t('enable'),key='enabled:'+setting)
+  warning_limit=st.number_input(t('warning_limit'),value=None,disabled=not enabled,key='warning:'+setting)
+  default=PARAMETERS.get(sensor,{}).get('direction','above')
+  directions=['below','above'] if default=='below' else ['above','below']
+  direction=st.radio(t('direction'),directions,format_func=lambda k,locale=lang:translate(locale,'lower' if k=='below' else 'upper'),key='direction:'+setting)
+  if default=='both':
+   low_limit=st.number_input(t('low_limit'),value=None,disabled=not enabled,key='low:'+setting)
+   high_limit=st.number_input(t('high_limit'),value=None,disabled=not enabled,key='high:'+setting)
+   if low_limit is not None and high_limit is not None and low_limit>=high_limit:
+    st.error(t('error_limits'));return
+   limit=low_limit if direction=='below' else high_limit
+  else:limit=st.number_input(t('limit'),value=None,disabled=not enabled,key='limit:'+setting)
+ cfg=AnalysisConfig(window=int(window),z_threshold=float(sensitivity))
+ digest=hashlib.sha256(st.session_state.content).hexdigest()
+ cache_key=(digest,int(window),float(sensitivity))
+ if st.session_state.get('analysis_key')!=cache_key:
+  with st.spinner(t('checking')):st.session_state.result=analyze_anomalies(df,cfg)
+  st.session_state.analysis_key=cache_key
+ result=st.session_state.result
+ selected=result.readings[result.readings.asset_id.eq(asset)]
+ unit=PARAMETERS.get(sensor,{}).get('unit',{'temperature_c':'°C','vibration_mm_s':'mm/s RMS','pressure_bar':'bar'}.get(sensor,''))
+ if enabled and limit is not None:
+  crossed=float(group[sensor].iloc[-1]) <= limit if direction=='below' else float(group[sensor].iloc[-1]) >= limit
+ else:crossed=False
+ if enabled and default=='both':
+  crossed=(low_limit is not None and float(group[sensor].iloc[-1])<=low_limit) or (high_limit is not None and float(group[sensor].iloc[-1])>=high_limit)
+ ready=bool(selected[sensor+'__ready'].iloc[-1]);flags=int(selected.tail(int(window))[sensor+'__anomaly'].sum())
+ state=t('threshold_reached') if crossed else t('short') if not ready else t('amber') if flags else t('green')
+ if enabled and warning_limit is not None and not crossed:
+  warned=float(group[sensor].iloc[-1]) <= warning_limit if direction=='below' else float(group[sensor].iloc[-1]) >= warning_limit
+  if warned:state=t('amber')
+ color='#DC2626' if crossed else '#D97706' if flags or not ready or state==t('amber') else '#16A34A'
+ icon='🔴' if crossed else '⚠️' if color=='#D97706' else '●'
+ with st.container(border=True):st.markdown(f'<p style="border-left:5px solid {color};padding:12px;color:#1F2937">{icon} {state}</p>',unsafe_allow_html=True)
+ data_tab,anomaly_tab,maintenance_tab=st.tabs([t('data'),t('anomalies'),t('maintenance')])
+ with data_tab:
+  preview=df.head(100).copy()
+  for col in preview:
+   if pd.api.types.is_numeric_dtype(preview[col]):preview[col]=preview[col].map(lambda v:number(v,lang))
+  preview.timestamp=preview.timestamp.map(lambda v:date(v,lang))
+  st.dataframe(preview,hide_index=True)
+ with anomaly_tab:
+  fleet=[]
+  for aid,g in result.readings.groupby('asset_id',sort=False):
+   sufficient=all(bool(g[c+'__ready'].iloc[-1]) for c in sensors)
+   unusual=any(bool(g.tail(int(window))[c+'__anomaly'].any()) for c in sensors)
+   reached=False
+   for c in sensors:
+    key=f'{digest[:12]}:{aid}:{c}'
+    if not st.session_state.get('enabled:'+key):continue
+    mode=st.session_state.get('direction:'+key,PARAMETERS.get(c,{}).get('direction','above'))
+    candidates=[('below',st.session_state.get('low:'+key)),('above',st.session_state.get('high:'+key))] if PARAMETERS.get(c,{}).get('direction')=='both' else [(mode,st.session_state.get('limit:'+key))]
+    reached=reached or any(v is not None and (float(g[c].iloc[-1])<=v if side=='below' else float(g[c].iloc[-1])>=v) for side,v in candidates)
+   code='threshold_reached' if reached else 'short' if not sufficient else 'amber' if unusual else 'green'
+   fleet.append({t('asset'):aid,t('status'):('🔴 ' if code=='threshold_reached' else '⚠️ ' if code!='green' else '● ')+t(code)})
+  st.dataframe(pd.DataFrame(fleet),hide_index=True)
+  if result.warnings:st.warning(t('quality'))
+  plot=_chart_sample(selected,sensor).copy()
+  if len(plot)<len(selected):st.caption(t('chart_reduced',count=number(len(plot),lang)))
+  # Render formatted time strings to avoid browser-language-dependent dates.
+  plot['_date']=plot.timestamp.map(lambda v:date(v,lang));plot['_value']=plot[sensor].map(lambda v:number(v,lang))
+  x=alt.X('timestamp:T',title=t('time'),scale=alt.Scale(type='utc'),axis=alt.Axis(labelExpr="utcFormat(datum.value, '%d.%m.%Y')" if lang!='en' else "utcFormat(datum.value, '%d %b %Y')",labelLimit=130,labelOverlap=True))
+  y=alt.Y(f'{sensor}:Q',title=f'{PARAMETERS[sensor]["name"][lang] if sensor in PARAMETERS else sensor} [{unit}]',axis=alt.Axis(labelExpr="replace(format(datum.value, '.2~f'), '.', ',')" if lang!='en' else "format(datum.value, '.2~f')"))
+  chart=alt.Chart(plot).mark_line(color='#1F4E79').encode(x=x,y=y,tooltip=[alt.Tooltip('_date:N',title=t('time')),alt.Tooltip('_value:N',title=t('values'))])
+  marks=alt.Chart(plot[plot[sensor+'__anomaly']]).mark_circle(color='#DC2626',size=50).encode(x=x,y=y)
+  if enabled and limit is not None:chart=chart+alt.Chart(pd.DataFrame({'threshold':[limit]})).mark_rule(color='#D97706').encode(y='threshold:Q')
+  st.altair_chart(chart+marks,width='stretch')
+  st.download_button(t('download'),safe_csv(result.readings),'results.csv','text/csv',key='results_download')
+ with maintenance_tab:
+  metric='hours' if sensor in LEGACY else spec['usage_metric']
+  # A CSV component takes precedence over the landing-page template selection.
+  if sensor not in LEGACY:metric='km' if 'odometer_km' in df else 'hours'
+  estimate=forecast_vehicle(df,asset,sensor,limit if enabled else None,direction,metric)
+  st.write(t(estimate.status))
+  if estimate.predicted_at is not None:
+   st.write(t('estimate',date=date(estimate.predicted_at,lang)))
+   st.write(t('band',low=date(estimate.earliest_at,lang),high=date(estimate.latest_at,lang)))
+  if estimate.operating_hours_at_threshold is not None:
+   st.write(t('usage_estimate',unit=metric if metric in ('km',) else t('hours'),value=number(estimate.operating_hours_at_threshold,lang),low=number(estimate.operating_hours_low,lang),high=number(estimate.operating_hours_high,lang)))
+  else:st.caption(t('counter'))
+  if estimate.predicted_at is not None and estimate.current_level is not None and estimate.slope_per_hour is not None:
+   last=group.timestamp.iloc[-1]
+   horizon=min(float(estimate.remaining_hours or 0),2160.)
+   if horizon>0:
+    hours=np.linspace(0,horizon,30)
+    future=pd.DataFrame({'_date':[date(pd.Timestamp(int(last.value)+int(h*3.6e12),tz='UTC'),lang) for h in hours],'mean':estimate.current_level+hours*estimate.slope_per_hour,'low':estimate.current_level+hours*(estimate.slope_low or 0),'high':estimate.current_level+hours*(estimate.slope_high or 0)})
+    future['timestamp']=[pd.Timestamp(int(last.value)+int(h*3.6e12),tz='UTC') for h in hours]
+    axis=alt.X('timestamp:T',scale=alt.Scale(type='utc'),title=t('time'),axis=alt.Axis(labelExpr="utcFormat(datum.value, '%d.%m.%Y')" if lang!='en' else "utcFormat(datum.value, '%d %b %Y')",labelOverlap=True))
+    area=alt.Chart(future).mark_area(opacity=.15,color='#1F4E79').encode(x=axis,y=alt.Y('low:Q',title=unit,axis=alt.Axis(labelExpr="replace(format(datum.value, '.2~f'), '.', ',')" if lang!='en' else "format(datum.value, '.2~f')")),y2='high:Q')
+    line=alt.Chart(future).mark_line(color='#1F4E79').encode(x=axis,y='mean:Q')
+    st.altair_chart(area+line,width='stretch')
+  st.caption(t('uncertainty'))
+  st.subheader(t('plan'))
+  mode=st.radio(t('plan'),['today','historical'],format_func=lambda k,locale=lang:translate(locale,k),key='plan_reference')
+  reference=pd.Timestamp.now(tz='UTC') if mode=='today' else df.timestamp.max()
+  plan_data=df.copy();plan_limits={}
+  prefix=hashlib.sha256(st.session_state.content).hexdigest()[:12]
+  for aid in df.asset_id.unique():
+   for param in sensors:
+    key=f'{prefix}:{aid}:{param}'
+    sign=st.session_state.get('direction:'+key,PARAMETERS.get(param,{}).get('direction','above'))
+    value=st.session_state.get(('low:' if sign=='below' else 'high:')+key) if PARAMETERS.get(param,{}).get('direction')=='both' else st.session_state.get('limit:'+key)
+    if st.session_state.get('enabled:'+key) and value is not None:
+     plan_limits[(aid,param)]=-value if sign=='below' else value
+     if sign=='below':plan_data.loc[plan_data.asset_id.eq(aid),param]=-plan_data.loc[plan_data.asset_id.eq(aid),param]
+  plan=build_maintenance_plan(plan_data,plan_limits,reference)
+  keys={'Revisión prioritaria':'urgent','Planificar revisión':'schedule','Seguimiento':'monitor','Seguimiento sin fecha':'monitor','Datos insuficientes':'short','Configurar umbrales':'configure','Actualizar datos':'stale','Revisar fechas':'dates','Revisar datos':'review'}
+  visible=pd.DataFrame({t('asset'):plan['Máquina'],t('priority'):plan['Prioridad'].map(lambda v:t(keys[v])),t('why'):plan['Prioridad'].map(lambda v:t(keys[v]+'_why')),t('review_date'):plan['Revisar antes de (UTC)'].map(lambda v:date(v,lang))})
+  st.dataframe(visible,hide_index=True)
+  st.download_button(t('plan_download'),safe_csv(visible),'review_plan.csv','text/csv',key='plan_download')
+  st.download_button(t('download_estimates'),safe_csv(pd.DataFrame([{'asset_id':asset,'sensor':sensor,**asdict(estimate)}]).drop(columns=['message','warnings','operating_message'])),'estimate.csv','text/csv',key='estimate_download')
+ render_resources(lang)
 
-# 1. Contrato de datos y límites de esta primera versión.
-MAX_BYTES = 10 * 1024 * 1024
-MAX_ROWS = 100_000
-SENSORS = ("temperature_c", "vibration_mm_s", "pressure_bar")
-REQUIRED = {"timestamp", "asset_id"}
-EXAMPLE = Path(__file__).parent / "examples" / "sensores_demo.csv"
+def change_language():
+ st.session_state.lang=st.session_state.language_choice
+ st.query_params['lang']=st.session_state.lang
 
-
-# 2. Lectura y validación independientes de la interfaz.
-def load_csv(content: bytes) -> pd.DataFrame:
-    """Lee UTF-8, delimitador coma y punto decimal. Nunca guarda el CSV."""
-    if len(content) > MAX_BYTES:
-        raise ValueError("El archivo supera el límite de 10 MiB.")
-    try:
-        decoded = content.decode("utf-8-sig")
-        header = next(csv.reader(StringIO(decoded)), [])
-        if len(header) != len(set(header)):
-            raise ValueError("Hay nombres de columnas duplicados.")
-        df = pd.read_csv(BytesIO(content), dtype=str, nrows=MAX_ROWS + 1)
-    except (UnicodeDecodeError, pd.errors.ParserError, pd.errors.EmptyDataError) as exc:
-        raise ValueError("Usa un CSV UTF-8 con comas como separador.") from exc
-
-    if df.empty:
-        raise ValueError("El CSV debe contener al menos una lectura.")
-    if len(df) > MAX_ROWS:
-        raise ValueError("El CSV supera el límite de 100.000 lecturas.")
-    missing = REQUIRED - set(df.columns)
-    if missing:
-        raise ValueError(f"Faltan columnas obligatorias: {', '.join(sorted(missing))}.")
-    sensors = [column for column in SENSORS if column in df.columns]
-    if not sensors:
-        raise ValueError(f"Incluye al menos un sensor: {', '.join(SENSORS)}.")
-
-    df["asset_id"] = df["asset_id"].fillna("").str.strip()
-    if df["asset_id"].eq("").any():
-        raise ValueError("Cada lectura debe identificar su máquina en asset_id.")
-    df["timestamp"] = pd.to_datetime(
-        df["timestamp"], format="ISO8601", errors="coerce", utc=True
-    )
-    if df["timestamp"].isna().any():
-        raise ValueError("Hay fechas vacías o inválidas; utiliza formato ISO 8601.")
-    if df.duplicated(["asset_id", "timestamp"]).any():
-        raise ValueError("Hay lecturas duplicadas para una misma máquina y fecha.")
-
-    numeric = sensors + (["operating_hours"] if "operating_hours" in df else [])
-    for column in numeric:
-        df[column] = pd.to_numeric(df[column], errors="coerce")
-        if not np.isfinite(df[column].to_numpy(dtype=float)).all():
-            raise ValueError(f"La columna {column} contiene valores vacíos o no numéricos.")
-    if "operating_hours" in df and df["operating_hours"].lt(0).any():
-        raise ValueError("Las horas de uso no pueden ser negativas.")
-    return df.sort_values(["asset_id", "timestamp"]).reset_index(drop=True)
-
-
-# 3. Interfaz: toda la información de trabajo permanece en la sesión del usuario.
-SENSOR_LABELS = {
-    "temperature_c": "Temperatura (°C)",
-    "vibration_mm_s": "Vibración (mm/s RMS)",
-    "pressure_bar": "Presión (bar)",
-}
-LARGE_EXAMPLE = EXAMPLE.parent / "synthetic" / "sensores_90d.csv"
-
-
-def _traffic_lights(result, thresholds: dict, window: int) -> pd.DataFrame:
-    rows = []
-    sensors = [sensor for sensor in SENSORS if sensor in result.readings]
-    for asset, group in result.readings.groupby("asset_id", sort=False):
-        recent = group.tail(window)
-        crossed = [SENSOR_LABELS[s] for s in sensors if (asset, s) in thresholds and float(group[s].iloc[-1]) >= thresholds[(asset, s)]]
-        ready = all(bool(group[s + "__ready"].iloc[-1]) for s in sensors)
-        found = sum(int(recent[s + "__anomaly"].sum()) for s in sensors)
-        joint = int(recent.if_anomaly.sum())
-        quality = any(w.startswith(str(asset) + ":") and ("muestreo irregular" in w or "hueco" in w) for w in result.warnings)
-        if crossed:
-            state, why = "🔴 Rojo", "La última lectura alcanza el umbral configurado: " + ", ".join(crossed) + ". Revisar la señal; no demuestra una avería."
-        elif not ready:
-            state, why = "🟠 Ámbar", "Datos insuficientes en el tramo reciente: todavía no se puede evaluar."
-        elif quality:
-            state, why = "🟠 Ámbar", "Hay huecos o muestreo irregular; revisa los avisos de calidad."
-        elif found or joint:
-            state, why = "🟠 Ámbar", f"En las últimas {len(recent)} lecturas: {found} indicios por sensor y {joint} indicios conjuntos. Conviene revisarlos."
-        else:
-            state, why = "🟢 Verde", f"Sin indicios detectados en las últimas {len(recent)} lecturas. Esto no garantiza ausencia de problemas."
-        rows.append({"Máquina": asset, "Semáforo": state, "Por qué": why})
-    return pd.DataFrame(rows)
-
+def render_resources(lang):
+ with st.expander(t('resources')):
+  with st.expander(t('format')):
+   st.write(t('format_help'))
+   if st.button(t('small_demo'),key='small_demo'):
+    st.session_state.content=EXAMPLE.read_bytes();st.session_state.synthetic=True;st.rerun()
+  query=st.text_input(t('search'),key='resource_search')
+  for entry in load_catalog()['datasets']:
+   if query.casefold() not in entry['name'].casefold():continue
+   st.markdown('**'+entry['name']+'**')
+   st.caption(t('license',license=entry['license'] if entry['license_verified'] else t('unknown')))
+   kind={'Sintético':'kind_synthetic','Simulado':'kind_synthetic','Banco experimental':'kind_bench','Operación real':'kind_real','Proceso industrial':'kind_process'}[entry['data_kind']]
+   st.caption(t('resource_meta',kind=t(kind),size=number(entry['records'],lang) if entry['records'] else t('unknown')))
+   st.link_button(t('source'),entry['url'])
+   with st.expander(t('details')):st.write(t('source_note'))
+  with st.expander(t('about')):st.write(t('about_body'))
 
 def _chart_sample(group: pd.DataFrame, sensor: str, limit: int = 3000) -> pd.DataFrame:
     """Acota la vista conservando los indicios escasos y una referencia temporal."""
@@ -115,170 +218,5 @@ def _chart_sample(group: pd.DataFrame, sensor: str, limit: int = 3000) -> pd.Dat
     regular = np.linspace(0, len(group) - 1, limit - len(marked), dtype=int)
     return group.iloc[np.unique(np.concatenate([marked, regular]))]
 
-
-def _anomaly_chart(group: pd.DataFrame, sensor: str) -> None:
-    # La vista se acota; las puntuaciones y la descarga conservan todas las filas.
-    total, total_marked = len(group), int(group[sensor + "__anomaly"].sum())
-    group = _chart_sample(group, sensor)
-    if len(group) < total:
-        shown = int(group[sensor + "__anomaly"].sum())
-        st.caption(f"Gráfico reducido: {len(group)} de {total} lecturas y {shown} de {total_marked} indicios. La descarga conserva todos los resultados.")
-    plot = group[["timestamp", sensor, sensor + "__baseline", sensor + "__anomaly"]].copy()
-    plot.columns = ["Fecha", "Lectura", "Referencia", "Indicio"]
-    x = alt.X("Fecha:T", title="Fecha (UTC)", scale=alt.Scale(type="utc"))
-    base = alt.Chart(plot).encode(x=x)
-    reading = base.mark_line(color="#147d92").encode(y=alt.Y("Lectura:Q", title=SENSOR_LABELS[sensor]), tooltip=["Fecha:T", "Lectura:Q"])
-    reference = base.mark_line(color="#718096", strokeDash=[5, 4]).encode(y="Referencia:Q")
-    marks = base.transform_filter(alt.datum.Indicio).mark_circle(color="#d94635", size=65).encode(y="Lectura:Q", tooltip=["Fecha:T", "Lectura:Q"])
-    st.altair_chart(reading + reference + marks, width="stretch")
-    st.caption("Azul: lectura · Gris discontinuo: referencia de su pasado · Rojo: indicio por sensor. No es una predicción de fallo.")
-
-
-def main() -> None:
-    st.set_page_config(page_title="Mantenimiento Predictivo Ligero", page_icon="⚙️", layout="wide")
-    st.title("Mantenimiento Predictivo Ligero")
-    st.caption("Fase 2 · Indicios de anomalía y planificación orientativa")
-    st.info("Una variación del sensor no demuestra una avería. Las estimaciones orientan una revisión y no predicen fallos.")
-    render_catalog()
-    with st.expander("Formato del CSV"):
-        st.markdown(
-            "Columnas obligatorias: `timestamp` y `asset_id`, más al menos un sensor: "
-            "`temperature_c` (°C), `vibration_mm_s` (mm/s RMS) o `pressure_bar` (bar). "
-            "`operating_hours` es opcional. Usa UTF-8, comas y punto decimal. "
-            "Las fechas sin zona horaria se interpretan como UTC. "
-            "Límites: 10 MiB y 100.000 lecturas. No se interpolan ni rellenan datos ausentes."
-        )
-        st.download_button("Descargar CSV sintético de ejemplo", data=EXAMPLE.read_bytes(), file_name="sensores_demo.csv", mime="text/csv")
-        st.download_button("Descargar histórico sintético de 90 días", data=LARGE_EXAMPLE.read_bytes(), file_name="sensores_90d.csv", mime="text/csv")
-    demo = st.checkbox("Probar con datos sintéticos")
-    large_demo = st.checkbox("Probar histórico de 90 días")
-    uploaded = st.file_uploader("Sube el histórico de sensores", type=["csv"], disabled=demo or large_demo)
-    st.caption("Los CSV no se guardan. El análisis y los ajustes se mantienen únicamente en tu sesión; no se usa una caché global de datos.")
-    if not demo and not large_demo and uploaded is None:
-        st.write("Descarga un ejemplo, activa una demostración o sube un CSV para comenzar.")
-        return
-    if demo and large_demo:
-        st.info("Está seleccionado el ejemplo pequeño; desactívalo para utilizar el histórico de 90 días.")
-    content = EXAMPLE.read_bytes() if demo else LARGE_EXAMPLE.read_bytes() if large_demo else uploaded.getvalue()
-    large_demo = large_demo and not demo
-    try:
-        df = load_csv(content)
-    except ValueError as exc:
-        st.error(str(exc))
-        return
-    st.success("CSV válido. Los datos están listos para explorar.")
-    readings, assets = st.columns(2)
-    readings.metric("Lecturas", len(df))
-    assets.metric("Máquinas", df["asset_id"].nunique())
-    selected_asset = st.selectbox("Máquina", df["asset_id"].unique().tolist())
-    sensors = [sensor for sensor in SENSORS if sensor in df]
-    selected_sensor = st.selectbox("Sensor", sensors, format_func=lambda sensor: SENSOR_LABELS[sensor])
-
-    with st.sidebar:
-        st.header("Cómo se revisan las señales")
-        window = int(st.number_input("Lecturas de referencia", min_value=24, max_value=336, value=48, step=24, help="Se comparan con lecturas anteriores, sin incluir la actual. Una ventana de lecturas no equivale siempre a horas."))
-        min_history = int(st.number_input("Mínimo de lecturas previas", min_value=3, max_value=window, value=min(24, window), step=1))
-        sensitivity = float(st.number_input("Desviación necesaria para señalar", min_value=1.0, max_value=20.0, value=4.5, step=0.5, help="Un valor menor señala más cambios y puede producir más falsas alertas."))
-        joint = st.checkbox("Análisis conjunto complementario", value=True, help="Compara varios sensores; necesita al menos dos y 193 lecturas. No señala por sí solo qué sensor causa el cambio.")
-        trend_window = int(st.number_input("Lecturas recientes para la tendencia", min_value=48, max_value=720, value=168, step=24))
-        horizon = int(st.number_input("Horizonte máximo (días)", min_value=1, max_value=90, value=90, step=1))
-        st.subheader("Umbrales de " + str(selected_asset))
-        st.caption("Define un umbral superior con tu responsable de mantenimiento. Se conserva por máquina y sensor solo en esta sesión.")
-        if large_demo and selected_asset == "M-005":
-            st.warning("82 °C y 3,8 mm/s son valores orientativos inventados para la demostración: no son normas ni dictámenes.")
-        namespace = sha256(content).hexdigest()[:16]
-        all_settings = st.session_state.setdefault("phase2_thresholds", {})
-        settings = all_settings.setdefault(namespace, {})
-        for sensor in sensors:
-            setting_key = str(selected_asset) + "\0" + sensor
-            illustrative = {"temperature_c": 82.0, "vibration_mm_s": 3.8}.get(sensor) if large_demo and selected_asset == "M-005" else None
-            previous = settings.get(setting_key, {"enabled": illustrative is not None, "value": illustrative})
-            widget = namespace + sha256(setting_key.encode()).hexdigest()[:16]
-            enabled = st.checkbox("Activar umbral · " + SENSOR_LABELS[sensor], value=previous["enabled"], key="enabled_" + widget)
-            value = st.number_input("Umbral superior · " + SENSOR_LABELS[sensor], value=previous["value"], step=0.1, disabled=not enabled, key="limit_" + widget, placeholder="Introduce tu límite")
-            settings[setting_key] = {"enabled": enabled, "value": value}
-        thresholds = {}
-        for asset in df.asset_id.unique():
-            for sensor in sensors:
-                entry = settings.get(str(asset) + "\0" + sensor)
-                if entry and entry["enabled"] and entry["value"] is not None:
-                    thresholds[(asset, sensor)] = float(entry["value"])
-
-    config = AnalysisConfig(window=window, min_history=min_history, z_threshold=sensitivity, if_enabled=joint)
-    result = analyze_anomalies(df, config)
-    forecast_config = ForecastConfig(window=trend_window, max_horizon_hours=horizon * 24)
-    data_tab, anomalies_tab, maintenance_tab = st.tabs(["Datos", "Anomalías", "Mantenimiento"])
-    with data_tab:
-        st.dataframe(df.head(100), hide_index=True)
-        st.caption("Vista previa de las primeras 100 lecturas. Las fechas se interpretan en UTC.")
-        series = df.loc[df.asset_id.eq(selected_asset), ["timestamp", selected_sensor]]
-        if len(series) > 3000:
-            series = series.iloc[np.linspace(0, len(series) - 1, 3000, dtype=int)]
-            st.caption("Vista del histórico reducida a 3.000 puntos; el análisis utiliza todas las lecturas.")
-        st.line_chart(series.set_index("timestamp"))
-        for warning in result.warnings:
-            st.warning(warning)
-    with anomalies_tab:
-        st.subheader("Semáforo por máquina")
-        st.caption(f"Resume las últimas {window} lecturas, no toda la vida de la máquina. Los umbrales solo se usan donde se han configurado.")
-        lights = _traffic_lights(result, thresholds, window)
-        st.dataframe(lights.head(500), hide_index=True)
-        selected = result.readings.loc[result.readings.asset_id.eq(selected_asset)]
-        if not selected[selected_sensor + "__ready"].any():
-            st.info(f"Datos insuficientes: hacen falta al menos {min_history + 1} lecturas consecutivas para buscar indicios; el CSV pequeño solo es una prueba de carga.")
-        st.write("Los puntos rojos son indicios respecto al pasado de este sensor. El análisis conjunto es complementario y no atribuye sus indicios a un sensor concreto.")
-        _anomaly_chart(selected, selected_sensor)
-        summary = result.summary.rename(columns={"asset_id": "Máquina", "sensor": "Sensor", "n_readings": "Lecturas", "n_evaluated": "Evaluadas", "n_anomalies": "Indicios por sensor", "if_evaluated": "Evaluadas conjuntamente", "if_anomalies": "Indicios conjuntos", "status": "Estado", "why": "Explicación"})
-        summary["Sensor"] = summary["Sensor"].map(SENSOR_LABELS)
-        summary["Estado"] = summary["Estado"].replace({"evaluado": "Evaluado", "datos_insuficientes": "Datos insuficientes"})
-        st.dataframe(summary.head(500), hide_index=True)
-        st.download_button("Descargar resultados de anomalías (CSV seguro)", safe_csv(result.readings), "resultados_anomalias.csv", "text/csv")
-        st.caption("La descarga protege celdas y cabeceras frente a fórmulas; los números negativos se exportan como texto seguro.")
-    with maintenance_tab:
-        st.subheader("Llegada orientativa al umbral superior")
-        st.write("La fecha supone que continúa la tendencia reciente y no cambian la carga ni el régimen de trabajo. No es una fecha de avería ni una orden de mantenimiento.")
-        group = df.loc[df.asset_id.eq(selected_asset)]
-        st.caption("Todas las duraciones parten de la última lectura del histórico (UTC): " + group.timestamp.iloc[-1].strftime("%Y-%m-%d %H:%M") + "; no de la fecha actual.")
-        if len(group) < forecast_config.min_points:
-            st.info(f"Datos insuficientes: hacen falta al menos {forecast_config.min_points} lecturas recientes para estimar una tendencia; hay {len(group)}.")
-        forecast = estimate_maintenance(df, selected_asset, selected_sensor, thresholds.get((selected_asset, selected_sensor)), forecast_config)
-        st.write(forecast.message)
-        if forecast.predicted_at is not None:
-            st.write("**Fecha orientativa (UTC):** " + forecast.predicted_at.strftime("%Y-%m-%d %H:%M"))
-            st.write(f"**Horas de calendario restantes:** {forecast.remaining_hours:,.1f}")
-            early = forecast.earliest_at.strftime("%Y-%m-%d %H:%M") if forecast.earliest_at is not None else "indeterminada"
-            late = forecast.latest_at.strftime("%Y-%m-%d %H:%M") if forecast.latest_at is not None else "indeterminada"
-            st.write(f"**Banda orientativa (UTC):** {early} a {late}")
-            st.caption("Esta banda combina incertidumbre de la pendiente y dispersión de los datos. No tiene una cobertura calibrada del 95 % para la fecha de llegada.")
-        if forecast.remaining_operating_hours is not None:
-            st.write(f"**Horas de uso restantes:** {forecast.remaining_operating_hours:,.1f}")
-            st.write(f"**Contador estimado al umbral:** {forecast.operating_hours_at_threshold:,.1f} h; banda {forecast.operating_hours_low:,.1f}–{forecast.operating_hours_high:,.1f} h acumuladas.")
-        st.caption(forecast.operating_message)
-        for warning in forecast.warnings:
-            st.warning(warning)
-        forecast_rows = []
-        for sensor in sensors:
-            estimate = forecast if sensor == selected_sensor else estimate_maintenance(df, selected_asset, sensor, thresholds.get((selected_asset, sensor)), forecast_config)
-            row = {"asset_id": selected_asset, "sensor": sensor, "threshold": thresholds.get((selected_asset, sensor)), **asdict(estimate)}
-            row["warnings"] = " | ".join(row["warnings"])
-            forecast_rows.append(row)
-        st.download_button("Descargar estimaciones (CSV seguro)", safe_csv(pd.DataFrame(forecast_rows)), "estimaciones_mantenimiento.csv", "text/csv")
-        st.caption("Selecciona otra máquina para configurar sus propios límites y revisar sus estimaciones.")
-        st.subheader("Plan de revisión por máquina")
-        st.write("Prioriza la revisión de señales, no la sustitución automática de piezas. El plazo usa el extremo temprano de la banda y la antelación que elijas.")
-        reference_mode = st.radio("Referencia del plan", ["Hoy (UTC)", "Última lectura del histórico (simulación)"], index=1 if large_demo else 0)
-        reference = df.timestamp.max() if reference_mode.endswith("(simulación)") else pd.Timestamp.now(tz="UTC")
-        st.caption("Referencia del plan (UTC): " + reference.strftime("%Y-%m-%d %H:%M") + ". La simulación no representa el estado actual de tus máquinas.")
-        lead = st.number_input("Antelación de la revisión (horas)", min_value=0, max_value=2160, value=72, step=12)
-        freshness = st.number_input("Antigüedad máxima admitida del histórico (horas)", min_value=1, max_value=720, value=72, step=1)
-        planning_days = st.number_input("Plazo de planificación (días)", min_value=1, max_value=90, value=30, step=1)
-        plan = build_maintenance_plan(df, thresholds, reference, PlanConfig(lead, freshness, planning_days), forecast_config)
-        plan["Sensor de referencia"] = plan["Sensor de referencia"].replace(SENSOR_LABELS)
-        st.dataframe(plan.head(500), hide_index=True)
-        st.download_button("Descargar plan de revisión (CSV seguro)", safe_csv(plan), "plan_revision.csv", "text/csv")
-        st.caption("Los plazos son orientativos. Confirma umbrales, calidad de datos y condiciones de operación con mantenimiento; las fechas antiguas o futuras requieren actualizar o corregir el histórico.")
-    st.caption("Una variación del sensor no demuestra una avería. Sin etiquetas reales de fallos no se puede afirmar predicción de fallos.")
-
-
 if __name__ == "__main__":
-    main()
+ main()
