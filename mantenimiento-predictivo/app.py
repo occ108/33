@@ -13,6 +13,7 @@ import altair as alt
 
 from analysis import AnalysisConfig, ForecastConfig, analyze_anomalies, estimate_maintenance
 from exports import safe_csv
+from catalog import render_catalog
 
 
 # 1. Contrato de datos y límites de esta primera versión.
@@ -137,6 +138,7 @@ def main() -> None:
     st.title("Mantenimiento Predictivo Ligero")
     st.caption("Fase 2 · Indicios de anomalía y planificación orientativa")
     st.info("Una variación del sensor no demuestra una avería. Las estimaciones orientan una revisión y no predicen fallos.")
+    render_catalog()
     with st.expander("Formato del CSV"):
         st.markdown(
             "Columnas obligatorias: `timestamp` y `asset_id`, más al menos un sensor: "

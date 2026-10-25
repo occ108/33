@@ -15,8 +15,9 @@ RUN --mount=type=bind,target=/build-context \
     else \
       python -m pip install --no-cache-dir -r requirements.txt; \
     fi && python -m pip check
-COPY --chown=app:app app.py analysis.py exports.py ./
+COPY --chown=app:app app.py analysis.py exports.py catalog.py ./
 COPY --chown=app:app examples/ ./examples/
+COPY --chown=app:app resources/ ./resources/
 USER app
 EXPOSE 8501
 CMD ["sh", "-c", "exec python -m streamlit run app.py --server.address=0.0.0.0 --server.port=${PORT:-8501} --server.headless=true --server.maxUploadSize=10 --browser.gatherUsageStats=false"]

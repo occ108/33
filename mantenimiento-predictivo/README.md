@@ -4,7 +4,11 @@ Aplicación Streamlit para revisar históricos de sensores, señalar **indicios 
 
 **Una variación del sensor no demuestra una avería. Sin etiquetas reales de fallos no se puede afirmar «predicción de fallos».** Las estimaciones no son órdenes de mantenimiento ni sustituyen la revisión técnica.
 
-La URL del servicio existente es <https://mantenimiento-predictivo-demo.onrender.com>. Esta URL no acredita que los cambios de la Fase 2 del ZIP estén desplegados: hay que actualizar la rama de Render y verificar el nuevo despliegue. El plan gratuito puede suspender la instancia cuando no se utiliza.
+La **Fase 2 está desplegada** en <https://mantenimiento-predictivo-demo.onrender.com>.
+Se verificaron el despliegue `live`, la salud HTTPS y una sesión pública con el histórico
+grande, las cinco máquinas y la proyección de M-005 con banda y horas de uso.
+`reports/release.json` identifica el commit y las comprobaciones. El plan gratuito puede
+suspender la instancia cuando no se utiliza.
 
 ## Instalar y ejecutar
 
@@ -199,3 +203,29 @@ No se modifican `web-demo/` ni `desarrollo-app-web-normativa-ingenieria/`. La fa
 ## Propuesta de Fase 3
 
 Validar con históricos reales autorizados y un responsable de mantenimiento: acordar unidades/umbrales, separar regímenes de carga, comprobar qué cambios merecen una revisión y medir falsas alertas y utilidad operativa. Repetir evaluación temporal por máquina y revisar los límites de proyección antes de formular promesas más fuertes. El PDF ejecutivo puede añadirse después de validar el contenido y las explicaciones que necesita ese responsable.
+
+## Biblioteca internacional de datos industriales
+
+La página incluye una biblioteca consultable **sin subir un CSV**, con seis fuentes
+revisadas: AI4I 2020, Condition Monitoring of Hydraulic Systems, MetroPT-3,
+Condition Based Maintenance of Naval Propulsion Plants, SECOM y el centro de
+rodamientos de Case Western Reserve University. Permite buscar y filtrar por equipo,
+consultar la fuente original y descargar los metadatos en JSON.
+
+Se revisaron las APIs oficiales de UCI y sus fichas de licencia (CC BY 4.0), junto
+con la página oficial de CWRU. Las condiciones de reutilización de CWRU quedan
+pendientes de confirmar; una página accesible no equivale a permiso para redistribuir.
+La fecha de revisión, DOI, autoría, procedencia y advertencias de adaptación figuran
+en `resources/catalog.json`. No se incluyen registros de Zenodo cuyo contenido no
+coincidía con el tema ni enlaces institucionales que devolvieron 404.
+
+**Alcance:** se incorporan metadatos y conocimiento de preparación, no los conjuntos
+completos ni entrenamiento adicional. Los datos nativos no son directamente
+compatibles con el CSV de la aplicación: hay que verificar unidades, cronología,
+identidad de equipos y etiquetas. No se inventan fechas ni se renombra aceleración
+como velocidad de vibración. La biblioteca no consulta servicios externos durante
+el análisis de archivos y no transmite a sus fuentes los datos subidos.
+
+No representa todas las bases del mundo ni una validación con datos reales. El
+siguiente paso útil es preparar un adaptador reproducible para un conjunto temporal,
+por ejemplo MetroPT-3, y evaluar el modelo por periodos antes de afirmar mejoras.

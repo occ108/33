@@ -8,3 +8,7 @@
 !examples/**
 !.wheels/
 !.wheels/*.whl
+
+!catalog.py
+!resources/
+!resources/**
