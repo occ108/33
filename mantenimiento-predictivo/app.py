@@ -14,6 +14,7 @@ import altair as alt
 from analysis import AnalysisConfig, ForecastConfig, analyze_anomalies, estimate_maintenance
 from exports import safe_csv
 from catalog import render_catalog
+from maintenance import PlanConfig, build_maintenance_plan
 
 
 # 1. Contrato de datos y límites de esta primera versión.
@@ -263,6 +264,19 @@ def main() -> None:
             forecast_rows.append(row)
         st.download_button("Descargar estimaciones (CSV seguro)", safe_csv(pd.DataFrame(forecast_rows)), "estimaciones_mantenimiento.csv", "text/csv")
         st.caption("Selecciona otra máquina para configurar sus propios límites y revisar sus estimaciones.")
+        st.subheader("Plan de revisión por máquina")
+        st.write("Prioriza la revisión de señales, no la sustitución automática de piezas. El plazo usa el extremo temprano de la banda y la antelación que elijas.")
+        reference_mode = st.radio("Referencia del plan", ["Hoy (UTC)", "Última lectura del histórico (simulación)"], index=1 if large_demo else 0)
+        reference = df.timestamp.max() if reference_mode.endswith("(simulación)") else pd.Timestamp.now(tz="UTC")
+        st.caption("Referencia del plan (UTC): " + reference.strftime("%Y-%m-%d %H:%M") + ". La simulación no representa el estado actual de tus máquinas.")
+        lead = st.number_input("Antelación de la revisión (horas)", min_value=0, max_value=2160, value=72, step=12)
+        freshness = st.number_input("Antigüedad máxima admitida del histórico (horas)", min_value=1, max_value=720, value=72, step=1)
+        planning_days = st.number_input("Plazo de planificación (días)", min_value=1, max_value=90, value=30, step=1)
+        plan = build_maintenance_plan(df, thresholds, reference, PlanConfig(lead, freshness, planning_days), forecast_config)
+        plan["Sensor de referencia"] = plan["Sensor de referencia"].replace(SENSOR_LABELS)
+        st.dataframe(plan.head(500), hide_index=True)
+        st.download_button("Descargar plan de revisión (CSV seguro)", safe_csv(plan), "plan_revision.csv", "text/csv")
+        st.caption("Los plazos son orientativos. Confirma umbrales, calidad de datos y condiciones de operación con mantenimiento; las fechas antiguas o futuras requieren actualizar o corregir el histórico.")
     st.caption("Una variación del sensor no demuestra una avería. Sin etiquetas reales de fallos no se puede afirmar predicción de fallos.")
 
 

@@ -235,3 +235,39 @@ Además del catálogo, `resources/ai4i2020.csv` contiene una copia original de l
 atribución constan en el catálogo y `resources/AI4I_LICENSE.txt`. Puede descargarse
 desde la biblioteca. No se inventan timestamps para introducirla en el analizador
 ni se usa como entrenamiento o validación adicional de sus resultados actuales.
+
+La ampliación de biblioteca supera **43 pruebas** en la suite completa (incluye las
+anteriores), además de comprobar carga en Docker e integridad SHA-256 de AI4I.
+
+## Plan de revisión por máquina
+
+La pestaña **Mantenimiento** incorpora un plan para todos los equipos del archivo,
+según los umbrales que hayas configurado para cada uno. Muestra prioridad, motivo,
+sensor que guía la revisión, plazo orientativo, banda de cruce y horas de uso hasta
+el umbral. Se descarga en CSV protegido contra fórmulas.
+
+- La revisión se propone antes del extremo temprano de la banda, descontando una
+  antelación configurable (72 horas por defecto). No es una garantía estadística
+  ni una orden de intervención.
+- El plan señala revisión prioritaria cuando se alcanza un umbral o el plazo
+  orientativo calculado ya se ha alcanzado; no afirma que exista una avería.
+- Los equipos sin límites configurados o sin datos suficientes quedan identificados,
+  sin inventarles una fecha ni interpretarlos como sanos.
+- **Hoy (UTC)** comprueba antigüedad (máximo configurable, 72 horas por defecto) y
+  lecturas futuras respecto al reloj. Un histórico desactualizado requiere nuevos
+  datos y no recibe un plazo actual.
+- **Última lectura del histórico (simulación)** permite probar datos antiguos. Es la
+  opción inicial del ejemplo grande y queda identificada explícitamente; no describe
+  el estado actual de las máquinas. Selecciona M-005 para ver la prioridad resultante.
+
+Las reglas de antelación, antigüedad y plazo de planificación son decisiones
+organizativas ajustables, no normas industriales. Revisa los avisos de calidad y
+acuerda límites con mantenimiento. El plan ordena revisiones humanas de señales;
+no programa ni ejecuta intervenciones sobre equipos.
+
+Se añadieron siete pruebas de planificación, incluyendo el flujo de interfaz:
+**50 pruebas completas pasan**. La medición nueva en `reports/maintenance_benchmark.json`
+incluye 100.000 filas, 5 máquinas, 3 sensores, análisis, 15 proyecciones, planificación
+y exportaciones: **5,31 segundos** y **282,01 MiB RSS** en un proceso Linux. La
+medición no demuestra concurrencia ni rendimiento idéntico en Render gratuito.
+No se añadieron dependencias; se reutilizan las versiones ya fijadas.

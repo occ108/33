@@ -10,5 +10,6 @@
 !.wheels/*.whl
 
 !catalog.py
+!maintenance.py
 !resources/
 !resources/**

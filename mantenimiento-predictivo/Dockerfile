@@ -15,7 +15,7 @@ RUN --mount=type=bind,target=/build-context \
     else \
       python -m pip install --no-cache-dir -r requirements.txt; \
     fi && python -m pip check
-COPY --chown=app:app app.py analysis.py exports.py catalog.py ./
+COPY --chown=app:app app.py analysis.py exports.py catalog.py maintenance.py ./
 COPY --chown=app:app examples/ ./examples/
 COPY --chown=app:app resources/ ./resources/
 USER app

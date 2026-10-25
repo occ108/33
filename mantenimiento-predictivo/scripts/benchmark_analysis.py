@@ -21,6 +21,7 @@ import pandas as pd
 from app import load_csv
 from analysis import AnalysisConfig, analyze_anomalies, estimate_maintenance
 from exports import safe_csv
+from maintenance import build_maintenance_plan
 
 
 def benchmark(rows: int = 100_000) -> dict:
@@ -52,16 +53,18 @@ def benchmark(rows: int = 100_000) -> dict:
         for sensor, threshold in {"temperature_c": 82.0, "vibration_mm_s": 3.8, "pressure_bar": 6.0}.items()
     ]
     forecasted = perf_counter()
+    plan = build_maintenance_plan(parsed, {(asset,sensor):limit for asset in parsed.asset_id.unique() for sensor,limit in {'temperature_c':82.,'vibration_mm_s':3.8,'pressure_bar':6.}.items()}, parsed.timestamp.max())
     exported = safe_csv(result.readings)
+    plan_export = safe_csv(plan)
     finished = perf_counter()
     peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024
     return {
         "rows": rows, "assets": 5, "sensors": 3, "csv_bytes": len(content),
         "csv_seconds": loaded - start, "analysis_seconds": analyzed - loaded,
         "forecast_seconds": forecasted - analyzed, "forecast_count": len(estimates),
-        "export_seconds": finished - forecasted, "export_bytes": len(exported),
+        "plan_and_export_seconds": finished - forecasted, "plan_rows":len(plan), "export_bytes": len(exported),
         "pipeline_seconds": finished - start, "peak_rss_mib": peak,
-        "rss_includes": "Imports de Streamlit y dependencias, generación de CSV, validación, anomalías, 15 estimaciones y CSV seguro de resultados. Un proceso nuevo, una ejecución, cinco máquinas. No es una medida de concurrencia.",
+        "rss_includes": "Imports de Streamlit y dependencias, generación de CSV, validación, anomalías, 15 estimaciones, plan de revisión y CSV seguros. Un proceso nuevo, una ejecución, cinco máquinas. No es una medida de concurrencia.",
         "budget_rss_mib": 400, "within_memory_budget": peak < 400,
         "analysis_target_seconds": 5, "within_time_target": analyzed - loaded < 5,
         "result_rows": len(result.readings), "python": platform.python_version(),

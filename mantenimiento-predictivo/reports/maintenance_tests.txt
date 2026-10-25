@@ -1,0 +1,61 @@
+test_constant_and_short_series (test_analysis.AnomalyTests.test_constant_and_short_series) ... ok
+test_exact_window_median_and_mad (test_analysis.AnomalyTests.test_exact_window_median_and_mad) ... ok
+test_extreme_finite_values (test_analysis.AnomalyTests.test_extreme_finite_values) ... ok
+test_forest_spikes_determinism_and_causality (test_analysis.AnomalyTests.test_forest_spikes_determinism_and_causality) ... ok
+test_forest_warmup_does_not_retroactively_score_prefix (test_analysis.AnomalyTests.test_forest_warmup_does_not_retroactively_score_prefix) ... ok
+test_gaps_irregularity_and_baseline_restart (test_analysis.AnomalyTests.test_gaps_irregularity_and_baseline_restart) ... ok
+test_invalid_configuration (test_analysis.AnomalyTests.test_invalid_configuration) ... ok
+test_machine_isolation (test_analysis.AnomalyTests.test_machine_isolation) ... ok
+test_precise_regular_intervals_and_wide_date_ranges (test_analysis.AnomalyTests.test_precise_regular_intervals_and_wide_date_ranges) ... ok
+test_spikes_and_exact_past_baseline (test_analysis.AnomalyTests.test_spikes_and_exact_past_baseline) ... ok
+test_example_and_single_sensor (test_app.CSVTests.test_example_and_single_sensor) ... ok
+test_invalid_data_rejected (test_app.CSVTests.test_invalid_data_rejected) ... ok
+test_limits (test_app.CSVTests.test_limits) ... ok
+test_demo_and_asset_selection (test_app.InterfaceTests.test_demo_and_asset_selection) ... 2026-10-25 20:52:33.260 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_available_before_upload_and_searchable (test_catalog.CatalogTests.test_available_before_upload_and_searchable) ... 2026-10-25 20:52:33.782 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_filters_and_empty_result (test_catalog.CatalogTests.test_filters_and_empty_result) ... ok
+test_original_snapshot_integrity_and_size (test_catalog.CatalogTests.test_original_snapshot_integrity_and_size) ... ok
+test_provenance_and_scope (test_catalog.CatalogTests.test_provenance_and_scope) ... ok
+test_creates_only_free_service_without_deployment_credentials (test_deploy_render.DeploymentTests.test_creates_only_free_service_without_deployment_credentials) ... ok
+test_reuses_service_and_refuses_conflicting_configuration (test_deploy_render.DeploymentTests.test_reuses_service_and_refuses_conflicting_configuration) ... ok
+test_formulas_and_headers_are_neutralized (test_exports.ExportTests.test_formulas_and_headers_are_neutralized) ... ok
+test_negative_numbers_are_safe_text_and_missing_values_blank (test_exports.ExportTests.test_negative_numbers_are_safe_text_and_missing_values_blank) ... ok
+test_normal_values_quotes_newlines_and_unicode_round_trip (test_exports.ExportTests.test_normal_values_quotes_newlines_and_unicode_round_trip) ... ok
+test_original_frame_and_headers_are_unchanged (test_exports.ExportTests.test_original_frame_and_headers_are_unchanged) ... ok
+test_config_and_missing_selection (test_forecast.ForecastTests.test_config_and_missing_selection) ... ok
+test_constant_short_and_unconfigured (test_forecast.ForecastTests.test_constant_short_and_unconfigured) ... ok
+test_degradation_interval_and_usage (test_forecast.ForecastTests.test_degradation_interval_and_usage) ... ok
+test_extreme_values_and_determinism (test_forecast.ForecastTests.test_extreme_values_and_determinism) ... ok
+test_gap_recent_segment_and_irregular_times (test_forecast.ForecastTests.test_gap_recent_segment_and_irregular_times) ... ok
+test_microsecond_sampling_has_finite_projection_without_false_warning (test_forecast.ForecastTests.test_microsecond_sampling_has_finite_projection_without_false_warning) ... ok
+test_reached_and_horizon (test_forecast.ForecastTests.test_reached_and_horizon) ... ok
+test_usage_reset_before_recent_window_is_not_forgotten (test_forecast.ForecastTests.test_usage_reset_before_recent_window_is_not_forgotten) ... ok
+test_usage_reset_or_constant_does_not_stop_calendar (test_forecast.ForecastTests.test_usage_reset_or_constant_does_not_stop_calendar) ... ok
+test_demo_plan_and_real_time_reject_old_history (test_maintenance.PlanInterfaceTests.test_demo_plan_and_real_time_reject_old_history) ... 2026-10-25 20:52:34.172 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_config_and_unknown_limit (test_maintenance.PlanTests.test_config_and_unknown_limit) ... ok
+test_constant_and_determinism (test_maintenance.PlanTests.test_constant_and_determinism) ... ok
+test_degradation_orders_review_before_early_band (test_maintenance.PlanTests.test_degradation_orders_review_before_early_band) ... ok
+test_future_clock_and_short_series (test_maintenance.PlanTests.test_future_clock_and_short_series) ... ok
+test_old_data_do_not_get_current_deadlines (test_maintenance.PlanTests.test_old_data_do_not_get_current_deadlines) ... ok
+test_reached_limit_and_unconfigured (test_maintenance.PlanTests.test_reached_limit_and_unconfigured) ... ok
+test_chart_reduction_preserves_sparse_indications (test_phase2_ui.Phase2InterfaceTests.test_chart_reduction_preserves_sparse_indications) ... ok
+test_large_example_forecast_and_machine_settings (test_phase2_ui.Phase2InterfaceTests.test_large_example_forecast_and_machine_settings) ... 2026-10-25 20:52:37.170 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_small_example_explains_insufficient_data (test_phase2_ui.Phase2InterfaceTests.test_small_example_explains_insufficient_data) ... 2026-10-25 20:52:41.789 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_small_example_has_priority_and_joint_can_be_disabled (test_phase2_ui.Phase2InterfaceTests.test_small_example_has_priority_and_joint_can_be_disabled) ... 2026-10-25 20:52:42.022 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_determinism_and_seed_changes_measurements (test_synthetic.SyntheticTests.test_determinism_and_seed_changes_measurements) ... ok
+test_gradual_degradation_only_on_last_asset (test_synthetic.SyntheticTests.test_gradual_degradation_only_on_last_asset) ... ok
+test_invalid_generation_parameters (test_synthetic.SyntheticTests.test_invalid_generation_parameters) ... ok
+test_shape_contract_size_and_operating_hours (test_synthetic.SyntheticTests.test_shape_contract_size_and_operating_hours) ... ok
+test_truth_alignment_and_events_on_both_sides_of_split (test_synthetic.SyntheticTests.test_truth_alignment_and_events_on_both_sides_of_split) ... ok
+test_writes_three_reproducible_files (test_synthetic.SyntheticTests.test_writes_three_reproducible_files) ... ok
+
+----------------------------------------------------------------------
+Ran 50 tests in 11.459s
+
+OK

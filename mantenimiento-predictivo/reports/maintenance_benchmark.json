@@ -1,0 +1,23 @@
+{
+  "rows": 100000,
+  "assets": 5,
+  "sensors": 3,
+  "csv_bytes": 5956344,
+  "csv_seconds": 0.32919820699999036,
+  "analysis_seconds": 2.063801336999859,
+  "forecast_seconds": 0.6091746200002035,
+  "forecast_count": 15,
+  "plan_and_export_seconds": 2.3033208179999747,
+  "plan_rows": 5,
+  "export_bytes": 22239390,
+  "pipeline_seconds": 5.3054949820000274,
+  "peak_rss_mib": 282.01171875,
+  "rss_includes": "Imports de Streamlit y dependencias, generación de CSV, validación, anomalías, 15 estimaciones, plan de revisión y CSV seguros. Un proceso nuevo, una ejecución, cinco máquinas. No es una medida de concurrencia.",
+  "budget_rss_mib": 400,
+  "within_memory_budget": true,
+  "analysis_target_seconds": 5,
+  "within_time_target": true,
+  "result_rows": 100000,
+  "python": "3.12.14",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41"
+}
