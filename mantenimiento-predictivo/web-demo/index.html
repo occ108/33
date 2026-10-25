@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Demostración de carga de históricos industriales y visualización de sensores. Los datos se procesan en tu navegador.">
+  <title>Mantenimiento Predictivo Ligero · Demostración</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230c8271'/%3E%3Cpath d='M5 17h6l3-8 5 15 3-7h5' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="./" aria-label="Inicio"><span class="brand-icon" aria-hidden="true">⌁</span> Pulso Industrial</a><span class="pill">Demostración · Fase 1</span></header>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">DATOS QUE AYUDAN A DECIDIR</p>
+      <h1>Conoce el pulso<br>de tus máquinas.</h1>
+      <p class="intro">Explora tus históricos de sensores en un solo lugar. Carga un CSV, revisa su calidad y compara la evolución de cada equipo.</p>
+      <div class="hero-note"><span aria-hidden="true">◉</span> Tus archivos se procesan en este navegador y no se guardan. Esta demo todavía no realiza predicciones.</div>
+    </section>
+
+    <section class="panel upload-panel" aria-labelledby="upload-heading">
+      <div><p class="eyebrow">01 · PREPARA TUS DATOS</p><h2 id="upload-heading">Tu histórico, una vista más clara</h2><p>Usa un archivo propio o empieza con nuestra muestra sintética.</p></div>
+      <div class="actions"><label class="button primary" for="csv-file">Cargar un CSV<input id="csv-file" type="file" accept=".csv,text/csv"></label><button id="demo-button" class="button secondary" type="button">Probar con datos de ejemplo</button><a class="download" href="sensores_demo.csv" download>Descargar ejemplo ↓</a></div>
+      <p class="file-hint">UTF-8 · Separador coma · Punto decimal · Máximo 10 MiB / 100.000 lecturas</p>
+      <details><summary>Ver formato y unidades del CSV</summary><div class="format"><p>Incluye <code>timestamp</code> (fecha ISO 8601) y <code>asset_id</code> (máquina), más al menos uno de estos sensores:</p><ul><li><code>temperature_c</code>: temperatura en °C</li><li><code>vibration_mm_s</code>: vibración en mm/s RMS</li><li><code>pressure_bar</code>: presión en bar</li></ul><p><code>operating_hours</code> es opcional y debe ser un número no negativo. Las fechas sin zona horaria se interpretan como UTC. No se rellenan valores ausentes automáticamente.</p></div></details>
+      <p id="message" class="message" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="results" aria-label="Resultados de la carga" hidden>
+      <div class="section-heading"><div><p class="eyebrow">02 · EXPLORA EL HISTÓRICO</p><h2>Una mirada a tu operación</h2></div><span id="dataset-label" class="pill"></span></div>
+      <div class="metrics"><article><span>Lecturas válidas</span><strong id="readings-count">0</strong></article><article><span>Máquinas</span><strong id="assets-count">0</strong></article><article class="metric-period"><span>Periodo del histórico · UTC</span><strong id="period">—</strong></article></div>
+      <section class="panel chart-panel" aria-labelledby="chart-heading"><div class="chart-header"><div><h3 id="chart-heading">Evolución del sensor</h3><p id="chart-description">Selecciona un equipo y una señal.</p></div><div class="selectors"><label>Máquina<select id="asset-select"></select></label><label>Sensor<select id="sensor-select"></select></label></div></div><div class="chart-wrap"><svg id="chart" viewBox="0 0 960 320" role="img" aria-labelledby="chart-title chart-desc"><title id="chart-title">Serie temporal del sensor</title><desc id="chart-desc">Lecturas del equipo seleccionado.</desc></svg></div><p id="chart-footnote" class="muted"></p></section>
+      <section class="panel table-panel" aria-labelledby="table-heading"><div class="table-header"><h3 id="table-heading">Detalle de las lecturas</h3><span id="table-count" class="muted"></span></div><div class="table-scroll"><table id="data-table"><thead></thead><tbody></tbody></table></div></section>
+    </section>
+    <aside class="scope"><span aria-hidden="true">↗</span><div><strong>Primero, datos fiables. Después, análisis.</strong><p>Esta demostración valida archivos y muestra tendencias. Todavía no detecta anomalías, estima averías ni genera informes. Una variación del sensor no demuestra un fallo.</p></div></aside>
+  </main>
+  <footer><span>Pulso Industrial · Mantenimiento Predictivo Ligero</span><span>Demostración pública · Sin registro</span></footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
