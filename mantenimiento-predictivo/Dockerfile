@@ -9,8 +9,13 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN groupadd --system app && useradd --system --gid app --create-home app
 WORKDIR /app
 COPY requirements.txt ./requirements.txt
-RUN python -m pip install --no-cache-dir -r requirements.txt && python -m pip check
-COPY --chown=app:app app.py ./app.py
+RUN --mount=type=bind,target=/build-context \
+    if [ -d /build-context/.wheels ]; then \
+      python -m pip install --no-cache-dir --no-index --find-links=/build-context/.wheels -r requirements.txt; \
+    else \
+      python -m pip install --no-cache-dir -r requirements.txt; \
+    fi && python -m pip check
+COPY --chown=app:app app.py analysis.py exports.py ./
 COPY --chown=app:app examples/ ./examples/
 USER app
 EXPOSE 8501

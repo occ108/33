@@ -1,68 +1,69 @@
-# Despliegue de la demostración en Render
+# Despliegue de la Fase 2
 
-Se ha preparado `../render.yaml` para un servicio Docker gratuito en Frankfurt.
-El proveedor debe confirmar disponibilidad y condiciones del plan antes de crearlo.
-La URL definitiva la asigna Render al crear el servicio; no existe todavía.
+Servicio existente: https://mantenimiento-predictivo-demo.onrender.com
 
-## Requisitos pendientes
+La configuración `../render.yaml` conserva el servicio Docker gratuito, región Frankfurt,
+puerto dinámico y comprobación `/_stcore/health`. La rama de despliegue es
+`deploy/mantenimiento-predictivo`. El estado de una publicación se verifica en Render;
+una construcción local no demuestra que la instancia pública esté actualizada.
 
-1. Publicar los archivos nuevos del proyecto y `render.yaml` en la rama `deploy/mantenimiento-predictivo` del repositorio GitHub que se conectará a Render. No incluir secretos ni los archivos del proyecto de normativa en el commit del despliegue.
-2. Vincular una cuenta Render al repositorio mediante su integración GitHub.
-3. En Render, crear un Blueprint desde ese repositorio, seleccionar la rama `deploy/mantenimiento-predictivo` y revisar que el servicio usa el plan `free` antes de desplegar. El Blueprint usa `render.yaml` de la raíz.
+## Construir y probar
 
-Alternativamente, un agente puede crear el servicio mediante la API de Render si dispone de acceso a `api.render.com` y una credencial `RENDER_API_KEY` configurada de forma segura en los ajustes del entorno. No enviar claves por chat. La API de GitHub en `api.github.com` permite comprobar permisos y publicación.
-
-### Despliegue mediante API
-
-La clave de red se utiliza exclusivamente para autenticar las peticiones HTTPS
-a `api.render.com`; no se incorpora al contenedor ni a las variables de la app.
-El script requiere el identificador público del espacio de trabajo de Render
-(`tea-…` o `usr-…`), visible en la URL de su panel o en sus ajustes.
+Desde `mantenimiento-predictivo/`:
 
 ```sh
-python3 deploy_render.py --owner-id IDENTIFICADOR_DEL_ESPACIO
+docker build -t mantenimiento-predictivo:fase2 .
+docker run --rm -p 8501:8501 --memory=512m mantenimiento-predictivo:fase2
 ```
 
-El script reutiliza un servicio coincidente o crea uno con el plan `free`;
-rechaza servicios existentes con configuración incompatible y guarda únicamente
-identificadores y URL en `/tmp/mantenimiento-render-state.json`.
-Después hay que consultar el estado del despliegue y verificar HTTP y la interfaz.
-Crear el recurso no implica que la aplicación esté lista.
+El Dockerfile incorpora `app.py`, `analysis.py`, `exports.py` y los ejemplos sintéticos.
+Se ejecuta con usuario sin privilegios. No incorpora tests, informes, archivos de usuario,
+credenciales ni la herramienta de despliegue. Mantiene la verificación TLS y de artefactos.
 
-En esta sesión, la consulta de servicios de Render funciona con la clave, pero
-la consulta `/v1/owners` devuelve un bloqueo HTML de Cloudflare (HTTP 403).
-Eso impide descubrir automáticamente el identificador del espacio de trabajo.
-No se necesita otra clave para resolver ese dato.
+## Construcción sin red en el contenedor
 
-## Verificación posterior al despliegue
-
-- La URL HTTPS asignada debe responder y `/_stcore/health` devolver `ok`.
-- Activar «Probar con datos sintéticos»: 9 lecturas y 2 máquinas.
-- Cambiar de máquina y sensor y comprobar que el gráfico se actualiza.
-- Subir `examples/sensores_demo.csv` y verificar el mismo resumen.
-
-El servicio gratuito puede suspenderse cuando no tiene uso y tardar en arrancar.
-La demostración no tiene autenticación ni almacenamiento persistente configurado.
-Usar datos sintéticos o anonimizados. Es una demostración pública, no el SaaS de producción.
-
-## Comprobación Docker local cuando haya un daemon disponible
-
-Desde este directorio:
+El daemon Docker de este entorno no resuelve los destinos de descarga. Para verificar
+el Dockerfile real se descargaron wheels mediante pip y HTTPS verificado en el host:
 
 ```sh
-docker build -t mantenimiento-predictivo-demo .
-docker run --rm -p 8501:8501 mantenimiento-predictivo-demo
+python -m pip download --only-binary=:all: -r requirements.txt -d .wheels
+docker build --network=none -t mantenimiento-predictivo:fase2 .
 ```
 
-El contenedor se ejecuta sin privilegios de root y solo incorpora aplicación,
-dependencias y el CSV sintético. El daemon Docker del entorno de onboarding está
-disponible, pero sus contenedores de construcción no resuelven destinos de red.
-La construcción directa falla al intentar descargar dependencias. Se ha construido
-una imagen de validación equivalente usando las mismas versiones descargadas por
-pip mediante HTTPS verificado desde el entorno host, e instaladas sin conexión
-en el contenedor. No se ha desactivado TLS ni alterado ninguna dependencia.
+La carpeta `.wheels/` está ignorada por Git y excluida del ZIP. Se monta únicamente durante
+la construcción y no queda en la imagen final. Cuando no existe, el mismo Dockerfile
+instala desde el índice normal mediante HTTPS, como en Render. No se han desactivado
+TLS, firmas ni comprobaciones de integridad. La imagen usa BuildKit para ese montaje.
 
-La imagen de validación ha superado arranque con `PORT=10000`, comprobación
-HTTP de salud y ejecución de la interfaz con 9 lecturas y 2 máquinas, bajo un
-límite de 512 MiB y usuario sin privilegios. Esto verifica el contenedor local;
-el despliegue y la URL pública de Render siguen pendientes.
+Los resultados medidos se guardan en `reports/docker.json` y
+`reports/benchmark_docker.json`, separados del benchmark del host.
+
+## Publicar o reutilizar el servicio
+
+La clave `RENDER_API_KEY` es un secreto de red usado únicamente hacia `api.render.com`.
+Nunca se incorpora a la aplicación ni al contenedor. El identificador de Workspace empieza
+por `tea-`; el identificador de usuario `usr-` no sirve para crear el servicio de esta cuenta.
+
+```sh
+python deploy_render.py --owner-id IDENTIFICADOR_DEL_WORKSPACE
+```
+
+El script comprueba servicios existentes antes de crear uno y solo solicita el plan `free`.
+La publicación también puede configurarse con un Blueprint de Render y `render.yaml`.
+No pegar claves en archivos ni en el chat. Los identificadores y URL del servicio pueden
+guardarse en `/tmp/mantenimiento-render-state.json`; ese archivo no contiene la clave.
+
+## Validación posterior a cada publicación
+
+1. Confirmar el estado `live` del despliegue correspondiente al commit publicado.
+2. Comprobar HTTPS de la página y `/_stcore/health`, que debe devolver `ok`.
+3. El ejemplo pequeño debe mostrar 9 lecturas, 2 máquinas y explicar que faltan datos.
+4. Activar «Probar histórico de 90 días»: 10.800 lecturas y 5 máquinas.
+5. Seleccionar M-005, Temperatura y Mantenimiento: debe mostrar la estimación hasta el
+   umbral orientativo de 82 °C, su banda y las horas de uso desde la última lectura.
+6. Verificar las tres pestañas y descargar los CSV seguros.
+
+La demostración no tiene autenticación y no ofrece garantías de seguridad industrial.
+Los archivos y ajustes permanecen en la sesión, sin persistencia configurada ni caché global.
+El plan gratuito puede suspender el proceso cuando no tiene uso. Las mediciones no validan
+varios usuarios simultáneos ni sustituyen una revisión con datos reales.

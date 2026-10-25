@@ -2,5 +2,9 @@
 !Dockerfile
 !requirements.txt
 !app.py
+!analysis.py
+!exports.py
 !examples/
-!examples/sensores_demo.csv
+!examples/**
+!.wheels/
+!.wheels/*.whl

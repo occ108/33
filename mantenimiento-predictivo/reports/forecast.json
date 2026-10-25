@@ -1,0 +1,71 @@
+{
+  "asset_id": "M-005",
+  "config": {
+    "window": 168,
+    "min_points": 48,
+    "max_points": 128,
+    "max_horizon_hours": 2160.0,
+    "confidence": 0.95
+  },
+  "estimates": {
+    "temperature_c": {
+      "threshold": 82.0,
+      "generator_slope_per_hour": 0.025,
+      "result": {
+        "status": "estimated",
+        "message": "Estimación orientativa de llegada al umbral si continúa la tendencia reciente.",
+        "predicted_at": "2026-04-15T06:38:36.884832880+00:00",
+        "earliest_at": "2026-04-13T03:54:59.425312709+00:00",
+        "latest_at": "2026-04-17T14:24:21.584251660+00:00",
+        "remaining_hours": 343.64357912024445,
+        "remaining_hours_low": 292.916507031308,
+        "remaining_hours_high": 399.405995625461,
+        "slope_per_hour": 0.023729613642640143,
+        "slope_low": 0.022402683673469228,
+        "slope_high": 0.025131026666666625,
+        "operating_hours_at_threshold": 3176.9826843401834,
+        "operating_hours_low": 3138.937380273481,
+        "operating_hours_high": 3218.804496719096,
+        "remaining_operating_hours": 257.7326843401833,
+        "operating_message": "Horas de uso orientativas; no se convierten a calendario suponiendo funcionamiento continuo.",
+        "current_level": 73.84547063670256,
+        "n_points": 168,
+        "warnings": [
+          "Banda orientativa basada en pendiente y dispersión residual; no es un intervalo calibrado de fecha ni una probabilidad de fallo."
+        ]
+      }
+    },
+    "vibration_mm_s": {
+      "threshold": 3.8,
+      "generator_slope_per_hour": 0.002,
+      "result": {
+        "status": "estimated",
+        "message": "Estimación orientativa de llegada al umbral si continúa la tendencia reciente.",
+        "predicted_at": "2026-04-13T00:39:33.179107641+00:00",
+        "earliest_at": "2026-04-10T23:12:59.771695768+00:00",
+        "latest_at": "2026-04-15T08:58:38.914139792+00:00",
+        "remaining_hours": 289.6592164187891,
+        "remaining_hours_low": 240.2166032488243,
+        "remaining_hours_high": 345.9774761499424,
+        "slope_per_hour": 0.001957079130434782,
+        "slope_low": 0.0018370886075949361,
+        "slope_high": 0.0020738813559322035,
+        "operating_hours_at_threshold": 3136.4944123140917,
+        "operating_hours_low": 3099.4124524366184,
+        "operating_hours_high": 3178.7331071124568,
+        "remaining_operating_hours": 217.2444123140918,
+        "operating_message": "Horas de uso orientativas; no se convierten a calendario suponiendo funcionamiento continuo.",
+        "current_level": 3.233113992608696,
+        "n_points": 168,
+        "warnings": [
+          "Banda orientativa basada en pendiente y dispersión residual; no es un intervalo calibrado de fecha ni una probabilidad de fallo."
+        ]
+      }
+    }
+  },
+  "limitations": [
+    "Los umbrales solo son ejemplos sintéticos, no normas ni órdenes de mantenimiento.",
+    "Comparar la pendiente con la del generador no valida predicción de fallos ni cobertura de la banda temporal.",
+    "La proyección supone que la tendencia reciente continúa y no cambian carga, régimen ni calibración."
+  ]
+}

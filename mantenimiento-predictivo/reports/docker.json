@@ -1,0 +1,9 @@
+{
+  "image_size_mib": 723.7785873413086,
+  "image_id": "sha256:1e588830e888c7b053aada1cbf6f5601e35fb744f3c087fca2fa424e8d8331ff",
+  "build": "passed",
+  "functional_test": "passed",
+  "offline_wheels": "Downloaded using verified HTTPS with pip; mounted only during build; no TLS/checksum verification disabled.",
+  "runtime_memory_limit_mib": 512,
+  "runtime_cpus": 1
+}

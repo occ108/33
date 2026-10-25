@@ -1,0 +1,366 @@
+{
+  "seed": 42,
+  "config": {
+    "window": 48,
+    "min_history": 24,
+    "z_threshold": 4.5,
+    "if_enabled": true,
+    "if_train_size": 168,
+    "if_min_train": 96,
+    "if_estimators": 64,
+    "if_contamination": 0.01,
+    "random_state": 42
+  },
+  "train_end_exclusive": "2026-01-31T00:00:00+00:00",
+  "test_start_inclusive": "2026-01-31T00:00:00+00:00",
+  "design": "Parámetros fijados antes de evaluar. Referencia móvil causal; IsolationForest solo aprende del prefijo inicial de cada máquina. Las etiquetas nunca se pasan al detector.",
+  "rolling": {
+    "train": {
+      "evaluated": 10440,
+      "total": 10800,
+      "positive_unscored": 0,
+      "tp": 30,
+      "fp": 4,
+      "fn": 0,
+      "precision": 0.8823529411764706,
+      "recall": 1.0
+    },
+    "test": {
+      "evaluated": 21600,
+      "total": 21600,
+      "positive_unscored": 0,
+      "tp": 195,
+      "fp": 5,
+      "fn": 0,
+      "precision": 0.975,
+      "recall": 1.0
+    },
+    "test_events": {
+      "total": 35,
+      "detected": 35,
+      "missed": 0,
+      "mean_delay_hours_detected": 0.0,
+      "max_delay_hours_detected": 0.0,
+      "events": [
+        {
+          "event_id": "M-001-E03",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-001-E04",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-001-E05",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-001-E06",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-001-E07",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-001-E08",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-001-E09",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-002-E03",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-002-E04",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-002-E05",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-002-E06",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-002-E07",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-002-E08",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-002-E09",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-003-E03",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-003-E04",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-003-E05",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-003-E06",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-003-E07",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-003-E08",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-003-E09",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-004-E03",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-004-E04",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-004-E05",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-004-E06",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-004-E07",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-004-E08",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-004-E09",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-005-E03",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-005-E04",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-005-E05",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-005-E06",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-005-E07",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-005-E08",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-005-E09",
+          "delay_hours": 0.0
+        }
+      ]
+    }
+  },
+  "isolation_forest": {
+    "train": {
+      "evaluated": 2640,
+      "total": 3600,
+      "positive_unscored": 0,
+      "tp": 11,
+      "fp": 27,
+      "fn": 19,
+      "precision": 0.2894736842105263,
+      "recall": 0.36666666666666664
+    },
+    "test": {
+      "evaluated": 7200,
+      "total": 7200,
+      "positive_unscored": 0,
+      "tp": 85,
+      "fp": 740,
+      "fn": 20,
+      "precision": 0.10303030303030303,
+      "recall": 0.8095238095238095
+    },
+    "test_events": {
+      "total": 35,
+      "detected": 30,
+      "missed": 5,
+      "mean_delay_hours_detected": 0.1,
+      "max_delay_hours_detected": 1.0,
+      "events": [
+        {
+          "event_id": "M-001-E03",
+          "delay_hours": null
+        },
+        {
+          "event_id": "M-001-E04",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-001-E05",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-001-E06",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-001-E07",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-001-E08",
+          "delay_hours": null
+        },
+        {
+          "event_id": "M-001-E09",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-002-E03",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-002-E04",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-002-E05",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-002-E06",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-002-E07",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-002-E08",
+          "delay_hours": null
+        },
+        {
+          "event_id": "M-002-E09",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-003-E03",
+          "delay_hours": 1.0
+        },
+        {
+          "event_id": "M-003-E04",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-003-E05",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-003-E06",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-003-E07",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-003-E08",
+          "delay_hours": 1.0
+        },
+        {
+          "event_id": "M-003-E09",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-004-E03",
+          "delay_hours": 1.0
+        },
+        {
+          "event_id": "M-004-E04",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-004-E05",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-004-E06",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-004-E07",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-004-E08",
+          "delay_hours": null
+        },
+        {
+          "event_id": "M-004-E09",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-005-E03",
+          "delay_hours": null
+        },
+        {
+          "event_id": "M-005-E04",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-005-E05",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-005-E06",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-005-E07",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-005-E08",
+          "delay_hours": 0.0
+        },
+        {
+          "event_id": "M-005-E09",
+          "delay_hours": 0.0
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Una sola simulación y semilla; no estima rendimiento en maquinaria real.",
+    "La verdad positiva son picos inyectados. La degradación gradual está separada y puede contabilizarse como falso positivo, especialmente con IsolationForest.",
+    "La línea base móvil se actualiza con lecturas pasadas del periodo de prueba: evaluación online, sin mirar al futuro.",
+    "La demora se mide dentro del evento de 3 horas; los eventos no detectados se cuentan aparte.",
+    "El método robusto se cuenta por máquina/instante/sensor; el conjunto por máquina/instante con al menos un sensor anómalo. Sus métricas no tienen la misma unidad de observación."
+  ]
+}

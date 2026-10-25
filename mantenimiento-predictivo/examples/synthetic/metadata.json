@@ -1,0 +1,509 @@
+{
+  "seed": 42,
+  "days": 90,
+  "assets": 5,
+  "readings": 10800,
+  "sampling": "hourly; no gaps or interpolation",
+  "timezone": "UTC",
+  "start": "2026-01-01T00:00:00+00:00",
+  "train_end_exclusive": "2026-01-31T00:00:00+00:00",
+  "test_start_inclusive": "2026-01-31T00:00:00+00:00",
+  "test_end_exclusive": "2026-04-01T00:00:00+00:00",
+  "degradation_asset": "M-005",
+  "degradation_start": "2026-03-02T00:00:00+00:00",
+  "degradation_slopes_per_calendar_hour": {
+    "temperature_c": 0.025,
+    "vibration_mm_s": 0.002
+  },
+  "operating_hours_per_calendar_hour": 0.75,
+  "illustrative_upper_thresholds": {
+    "temperature_c": 82.0,
+    "vibration_mm_s": 3.8
+  },
+  "threshold_warning": "Synthetic demonstration values only; not standards or maintenance instructions.",
+  "truth_format": "Long table: one row per asset/timestamp/sensor, including negative labels.",
+  "point_label_definition": "is_anomaly marks injected 3-hour spikes only; is_degradation separately marks gradual drift.",
+  "failure_labels": "None: synthetic anomalies and drift do not represent labelled real failures.",
+  "injected_events": [
+    {
+      "event_id": "M-001-E01",
+      "asset_id": "M-001",
+      "start": "2026-01-11T19:00:00+00:00",
+      "end_exclusive": "2026-01-11T22:00:00+00:00",
+      "sensors": [
+        "temperature_c"
+      ],
+      "split": "train"
+    },
+    {
+      "event_id": "M-001-E02",
+      "asset_id": "M-001",
+      "start": "2026-01-21T16:00:00+00:00",
+      "end_exclusive": "2026-01-21T19:00:00+00:00",
+      "sensors": [
+        "vibration_mm_s"
+      ],
+      "split": "train"
+    },
+    {
+      "event_id": "M-001-E03",
+      "asset_id": "M-001",
+      "start": "2026-02-06T00:00:00+00:00",
+      "end_exclusive": "2026-02-06T03:00:00+00:00",
+      "sensors": [
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-001-E04",
+      "asset_id": "M-001",
+      "start": "2026-02-13T04:00:00+00:00",
+      "end_exclusive": "2026-02-13T07:00:00+00:00",
+      "sensors": [
+        "temperature_c",
+        "vibration_mm_s"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-001-E05",
+      "asset_id": "M-001",
+      "start": "2026-02-20T09:00:00+00:00",
+      "end_exclusive": "2026-02-20T12:00:00+00:00",
+      "sensors": [
+        "temperature_c",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-001-E06",
+      "asset_id": "M-001",
+      "start": "2026-03-01T09:00:00+00:00",
+      "end_exclusive": "2026-03-01T12:00:00+00:00",
+      "sensors": [
+        "vibration_mm_s",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-001-E07",
+      "asset_id": "M-001",
+      "start": "2026-03-09T12:00:00+00:00",
+      "end_exclusive": "2026-03-09T15:00:00+00:00",
+      "sensors": [
+        "temperature_c",
+        "vibration_mm_s",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-001-E08",
+      "asset_id": "M-001",
+      "start": "2026-03-17T14:00:00+00:00",
+      "end_exclusive": "2026-03-17T17:00:00+00:00",
+      "sensors": [
+        "temperature_c"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-001-E09",
+      "asset_id": "M-001",
+      "start": "2026-03-25T16:00:00+00:00",
+      "end_exclusive": "2026-03-25T19:00:00+00:00",
+      "sensors": [
+        "vibration_mm_s",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-002-E01",
+      "asset_id": "M-002",
+      "start": "2026-01-11T20:00:00+00:00",
+      "end_exclusive": "2026-01-11T23:00:00+00:00",
+      "sensors": [
+        "temperature_c"
+      ],
+      "split": "train"
+    },
+    {
+      "event_id": "M-002-E02",
+      "asset_id": "M-002",
+      "start": "2026-01-21T17:00:00+00:00",
+      "end_exclusive": "2026-01-21T20:00:00+00:00",
+      "sensors": [
+        "vibration_mm_s"
+      ],
+      "split": "train"
+    },
+    {
+      "event_id": "M-002-E03",
+      "asset_id": "M-002",
+      "start": "2026-02-06T01:00:00+00:00",
+      "end_exclusive": "2026-02-06T04:00:00+00:00",
+      "sensors": [
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-002-E04",
+      "asset_id": "M-002",
+      "start": "2026-02-13T05:00:00+00:00",
+      "end_exclusive": "2026-02-13T08:00:00+00:00",
+      "sensors": [
+        "temperature_c",
+        "vibration_mm_s"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-002-E05",
+      "asset_id": "M-002",
+      "start": "2026-02-20T10:00:00+00:00",
+      "end_exclusive": "2026-02-20T13:00:00+00:00",
+      "sensors": [
+        "temperature_c",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-002-E06",
+      "asset_id": "M-002",
+      "start": "2026-03-01T10:00:00+00:00",
+      "end_exclusive": "2026-03-01T13:00:00+00:00",
+      "sensors": [
+        "vibration_mm_s",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-002-E07",
+      "asset_id": "M-002",
+      "start": "2026-03-09T13:00:00+00:00",
+      "end_exclusive": "2026-03-09T16:00:00+00:00",
+      "sensors": [
+        "temperature_c",
+        "vibration_mm_s",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-002-E08",
+      "asset_id": "M-002",
+      "start": "2026-03-17T15:00:00+00:00",
+      "end_exclusive": "2026-03-17T18:00:00+00:00",
+      "sensors": [
+        "temperature_c"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-002-E09",
+      "asset_id": "M-002",
+      "start": "2026-03-25T17:00:00+00:00",
+      "end_exclusive": "2026-03-25T20:00:00+00:00",
+      "sensors": [
+        "vibration_mm_s",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-003-E01",
+      "asset_id": "M-003",
+      "start": "2026-01-11T21:00:00+00:00",
+      "end_exclusive": "2026-01-12T00:00:00+00:00",
+      "sensors": [
+        "temperature_c"
+      ],
+      "split": "train"
+    },
+    {
+      "event_id": "M-003-E02",
+      "asset_id": "M-003",
+      "start": "2026-01-21T18:00:00+00:00",
+      "end_exclusive": "2026-01-21T21:00:00+00:00",
+      "sensors": [
+        "vibration_mm_s"
+      ],
+      "split": "train"
+    },
+    {
+      "event_id": "M-003-E03",
+      "asset_id": "M-003",
+      "start": "2026-02-06T02:00:00+00:00",
+      "end_exclusive": "2026-02-06T05:00:00+00:00",
+      "sensors": [
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-003-E04",
+      "asset_id": "M-003",
+      "start": "2026-02-13T06:00:00+00:00",
+      "end_exclusive": "2026-02-13T09:00:00+00:00",
+      "sensors": [
+        "temperature_c",
+        "vibration_mm_s"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-003-E05",
+      "asset_id": "M-003",
+      "start": "2026-02-20T11:00:00+00:00",
+      "end_exclusive": "2026-02-20T14:00:00+00:00",
+      "sensors": [
+        "temperature_c",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-003-E06",
+      "asset_id": "M-003",
+      "start": "2026-03-01T11:00:00+00:00",
+      "end_exclusive": "2026-03-01T14:00:00+00:00",
+      "sensors": [
+        "vibration_mm_s",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-003-E07",
+      "asset_id": "M-003",
+      "start": "2026-03-09T14:00:00+00:00",
+      "end_exclusive": "2026-03-09T17:00:00+00:00",
+      "sensors": [
+        "temperature_c",
+        "vibration_mm_s",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-003-E08",
+      "asset_id": "M-003",
+      "start": "2026-03-17T16:00:00+00:00",
+      "end_exclusive": "2026-03-17T19:00:00+00:00",
+      "sensors": [
+        "temperature_c"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-003-E09",
+      "asset_id": "M-003",
+      "start": "2026-03-25T18:00:00+00:00",
+      "end_exclusive": "2026-03-25T21:00:00+00:00",
+      "sensors": [
+        "vibration_mm_s",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-004-E01",
+      "asset_id": "M-004",
+      "start": "2026-01-11T22:00:00+00:00",
+      "end_exclusive": "2026-01-12T01:00:00+00:00",
+      "sensors": [
+        "temperature_c"
+      ],
+      "split": "train"
+    },
+    {
+      "event_id": "M-004-E02",
+      "asset_id": "M-004",
+      "start": "2026-01-21T19:00:00+00:00",
+      "end_exclusive": "2026-01-21T22:00:00+00:00",
+      "sensors": [
+        "vibration_mm_s"
+      ],
+      "split": "train"
+    },
+    {
+      "event_id": "M-004-E03",
+      "asset_id": "M-004",
+      "start": "2026-02-06T03:00:00+00:00",
+      "end_exclusive": "2026-02-06T06:00:00+00:00",
+      "sensors": [
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-004-E04",
+      "asset_id": "M-004",
+      "start": "2026-02-13T07:00:00+00:00",
+      "end_exclusive": "2026-02-13T10:00:00+00:00",
+      "sensors": [
+        "temperature_c",
+        "vibration_mm_s"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-004-E05",
+      "asset_id": "M-004",
+      "start": "2026-02-20T12:00:00+00:00",
+      "end_exclusive": "2026-02-20T15:00:00+00:00",
+      "sensors": [
+        "temperature_c",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-004-E06",
+      "asset_id": "M-004",
+      "start": "2026-03-01T12:00:00+00:00",
+      "end_exclusive": "2026-03-01T15:00:00+00:00",
+      "sensors": [
+        "vibration_mm_s",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-004-E07",
+      "asset_id": "M-004",
+      "start": "2026-03-09T15:00:00+00:00",
+      "end_exclusive": "2026-03-09T18:00:00+00:00",
+      "sensors": [
+        "temperature_c",
+        "vibration_mm_s",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-004-E08",
+      "asset_id": "M-004",
+      "start": "2026-03-17T17:00:00+00:00",
+      "end_exclusive": "2026-03-17T20:00:00+00:00",
+      "sensors": [
+        "temperature_c"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-004-E09",
+      "asset_id": "M-004",
+      "start": "2026-03-25T19:00:00+00:00",
+      "end_exclusive": "2026-03-25T22:00:00+00:00",
+      "sensors": [
+        "vibration_mm_s",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-005-E01",
+      "asset_id": "M-005",
+      "start": "2026-01-11T23:00:00+00:00",
+      "end_exclusive": "2026-01-12T02:00:00+00:00",
+      "sensors": [
+        "temperature_c"
+      ],
+      "split": "train"
+    },
+    {
+      "event_id": "M-005-E02",
+      "asset_id": "M-005",
+      "start": "2026-01-21T20:00:00+00:00",
+      "end_exclusive": "2026-01-21T23:00:00+00:00",
+      "sensors": [
+        "vibration_mm_s"
+      ],
+      "split": "train"
+    },
+    {
+      "event_id": "M-005-E03",
+      "asset_id": "M-005",
+      "start": "2026-02-06T04:00:00+00:00",
+      "end_exclusive": "2026-02-06T07:00:00+00:00",
+      "sensors": [
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-005-E04",
+      "asset_id": "M-005",
+      "start": "2026-02-13T08:00:00+00:00",
+      "end_exclusive": "2026-02-13T11:00:00+00:00",
+      "sensors": [
+        "temperature_c",
+        "vibration_mm_s"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-005-E05",
+      "asset_id": "M-005",
+      "start": "2026-02-20T13:00:00+00:00",
+      "end_exclusive": "2026-02-20T16:00:00+00:00",
+      "sensors": [
+        "temperature_c",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-005-E06",
+      "asset_id": "M-005",
+      "start": "2026-03-01T13:00:00+00:00",
+      "end_exclusive": "2026-03-01T16:00:00+00:00",
+      "sensors": [
+        "vibration_mm_s",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-005-E07",
+      "asset_id": "M-005",
+      "start": "2026-03-09T16:00:00+00:00",
+      "end_exclusive": "2026-03-09T19:00:00+00:00",
+      "sensors": [
+        "temperature_c",
+        "vibration_mm_s",
+        "pressure_bar"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-005-E08",
+      "asset_id": "M-005",
+      "start": "2026-03-17T18:00:00+00:00",
+      "end_exclusive": "2026-03-17T21:00:00+00:00",
+      "sensors": [
+        "temperature_c"
+      ],
+      "split": "test"
+    },
+    {
+      "event_id": "M-005-E09",
+      "asset_id": "M-005",
+      "start": "2026-03-25T20:00:00+00:00",
+      "end_exclusive": "2026-03-25T23:00:00+00:00",
+      "sensors": [
+        "vibration_mm_s",
+        "pressure_bar"
+      ],
+      "split": "test"
+    }
+  ]
+}
