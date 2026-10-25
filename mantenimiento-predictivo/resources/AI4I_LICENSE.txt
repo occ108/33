@@ -1,0 +1,8 @@
+AI4I 2020 Predictive Maintenance Dataset
+Autor: S. Matzka. Repositorio: UCI Machine Learning Repository.
+DOI: https://doi.org/10.24432/C5HS5C
+Fuente original: https://archive.ics.uci.edu/static/public/601/data.csv
+Licencia confirmada en la ficha oficial: Creative Commons Attribution 4.0 International.
+https://creativecommons.org/licenses/by/4.0/
+Se redistribuye la copia CSV original, sin alterar columnas ni registros.
+Datos sintéticos: no constituyen averías observadas ni validan el modelo de esta app.

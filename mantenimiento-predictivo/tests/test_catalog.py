@@ -1,4 +1,7 @@
 import unittest
+import csv
+import hashlib
+from io import StringIO
 from pathlib import Path
 from streamlit.testing.v1 import AppTest
 from catalog import load_catalog, search_catalog
@@ -21,6 +24,14 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual([d['id'] for d in search_catalog(data,equipment=['Rodamientos'])],['cwru'])
         self.assertEqual(search_catalog(data,'noexiste2345'),[])
         self.assertEqual(len(data['datasets']),6)
+
+    def test_original_snapshot_integrity_and_size(self):
+        snapshot=next(d for d in load_catalog()['datasets'] if d['id']=='ai4i')['snapshot']
+        data=(Path(__file__).resolve().parents[1]/'resources'/snapshot['file']).read_bytes()
+        self.assertEqual(hashlib.sha256(data).hexdigest(),snapshot['sha256'])
+        rows=list(csv.DictReader(StringIO(data.decode('utf-8-sig'))))
+        self.assertEqual(len(rows),10000)
+        self.assertNotIn('timestamp',rows[0])
 
     def test_available_before_upload_and_searchable(self):
         app=AppTest.from_file(str(Path(__file__).resolve().parents[1]/'app.py')).run(timeout=30)

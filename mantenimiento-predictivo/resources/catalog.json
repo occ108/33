@@ -18,7 +18,14 @@
       "adaptation": "Temperaturas en K, velocidad, par y desgaste. Etiquetas de fallo simuladas. No contiene timestamp: no inventar fechas ni tratar Product ID como una máquina con histórico continuo.",
       "directly_compatible": false,
       "evidence_url": "https://archive.ics.uci.edu/api/dataset?id=601",
-      "authors": "S. Matzka"
+      "authors": "S. Matzka",
+      "snapshot": {
+        "file": "ai4i2020.csv",
+        "rows": 10000,
+        "sha256": "ffc3c28f35b1a1636eacd2bf46aca0ff5e795b4a8eb934309c5819079e9b5a18",
+        "source_url": "https://archive.ics.uci.edu/static/public/601/data.csv",
+        "note": "Datos originales sintéticos. Licencia CC BY 4.0; citar a S. Matzka y DOI 10.24432/C5HS5C. No se usan para entrenar el detector de históricos."
+      }
     },
     {
       "id": "hydraulic",

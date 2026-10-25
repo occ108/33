@@ -229,3 +229,9 @@ el análisis de archivos y no transmite a sus fuentes los datos subidos.
 No representa todas las bases del mundo ni una validación con datos reales. El
 siguiente paso útil es preparar un adaptador reproducible para un conjunto temporal,
 por ejemplo MetroPT-3, y evaluar el modelo por periodos antes de afirmar mejoras.
+
+Además del catálogo, `resources/ai4i2020.csv` contiene una copia original de las
+10.000 observaciones sintéticas AI4I, descargada de UCI. Su SHA-256, origen y
+atribución constan en el catálogo y `resources/AI4I_LICENSE.txt`. Puede descargarse
+desde la biblioteca. No se inventan timestamps para introducirla en el analizador
+ni se usa como entrenamiento o validación adicional de sus resultados actuales.

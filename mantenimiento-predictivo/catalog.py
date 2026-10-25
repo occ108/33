@@ -37,6 +37,12 @@ def render_catalog() -> None:
             st.write('Adaptación necesaria: ' + entry['adaptation'])
             st.caption('Licencia: ' + entry['license'] + (f" · DOI: {entry['doi']}" if entry['doi'] else ''))
             st.link_button('Consultar fuente · ' + entry['id'], entry['url'])
+            if entry.get('snapshot'):
+                snapshot = entry['snapshot']
+                st.caption(snapshot['note'])
+                st.download_button('Descargar datos originales · ' + entry['id'],
+                                   (CATALOG_PATH.parent / snapshot['file']).read_bytes(),
+                                   snapshot['file'], 'text/csv')
             if not entry['license_verified']: st.warning('Confirma las condiciones antes de copiar o redistribuir estos datos.')
             st.divider()
         if not found: st.info('No hay coincidencias. Prueba con otro término o quita filtros.')
