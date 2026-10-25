@@ -1,0 +1,47 @@
+{
+  "results": [
+    {
+      "lang": "es",
+      "width": 1440,
+      "overflow": false,
+      "uploaders": 0,
+      "reading": "2.50"
+    },
+    {
+      "lang": "es",
+      "width": 390,
+      "overflow": false,
+      "uploaders": 0,
+      "reading": "2.50"
+    },
+    {
+      "lang": "en",
+      "width": 1440,
+      "overflow": false,
+      "uploaders": 0,
+      "reading": "2.50"
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "overflow": false,
+      "uploaders": 0,
+      "reading": "2.50"
+    },
+    {
+      "lang": "de",
+      "width": 1440,
+      "overflow": false,
+      "uploaders": 0,
+      "reading": "2.50"
+    },
+    {
+      "lang": "de",
+      "width": 390,
+      "overflow": false,
+      "uploaders": 0,
+      "reading": "2.50"
+    }
+  ],
+  "errors": []
+}

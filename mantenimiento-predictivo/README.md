@@ -1,7 +1,7 @@
 # Axion — revisión de señales industriales y de automoción
 
-Rama de revisión: **automocion-ui**. Esta entrega no se ha publicado ni enviado a
-`deploy/mantenimiento-predictivo`. La web pública conserva la versión anterior.
+Rama de revisión: **automocion-ui**. Los nuevos formularios y referencias están preparados para revisión; todavía no se han
+enviado a `deploy/mantenimiento-predictivo`. La versión Axion anterior sí está publicada.
 
 ## Ejecutar (Python 3.12)
 
@@ -17,25 +17,60 @@ El entorno preparado usa `/workspace/.venvs/mantenimiento-predictivo/bin/python`
 No hay dependencias nuevas. Las opciones de `.streamlit/config.toml` se comprobaron
 con `streamlit.config.get_config_options()` de la versión 1.66.1 instalada.
 
-## Uso
+## Uso: mediciones desde la página
 
-1. Seleccione idioma, tipo de vehículo y componente. La plantilla conserva los
-   identificadores de columna; las unidades aparecen junto a la selección.
-2. Suba un CSV o pulse **Probar flota de ejemplo**. La flota es sintética y simplificada.
-3. Elija equipo y parámetro. Confirme los límites con el fabricante y actívelos en
-   la barra lateral. Para probar exclusivamente el escenario inventado de frenos,
-   CAR-01/brake_pad_mm admite un umbral de demostración de 5 mm por debajo: NO es
-   una recomendación para un vehículo real. Los límites de la interfaz están vacíos.
-4. Consulte Datos, Anomalías y Mantenimiento. La estimación comienza en la última
-   lectura, no en el día actual. El plan permite Hoy o simulación histórica; los
-   datos atrasados no reciben una fecha de intervención actual.
-5. Recursos, formato y ejemplo industrial anterior están plegados al final.
+1. Seleccione idioma, tipo de vehículo y componente; marque los parámetros que desea comprobar.
+2. Escriba marca, modelo, año, versión/motor/generación y mercado. Introduzca las
+   mediciones en las unidades indicadas. Los campos vacíos no equivalen a cero.
+3. Para la comparación de neumáticos, seleccione condiciones de uso y compruebe el
+   enlace al manual. Confirme su aplicabilidad a su generación y versión.
+4. Pulse **Comprobar mediciones**. Cada resultado incluye recomendación, condiciones
+   y fuente, o **Sin referencia verificada aplicable**. No se extrapola entre modelos.
+5. Opcionalmente pruebe la flota sintética para explorar las pestañas de análisis
+   histórico. Los umbrales configurados en esa demo no son referencias OEM verificadas.
 
-La banda es orientativa, no un intervalo de fallo calibrado. Una señal no diagnostica
-averías ni certifica el estado de un vehículo. Frenos, neumáticos, suspensión y
- dirección muestran el aviso de inspección cualificada. No hay persistencia de CSV,
-logs de datos subidos ni caché global de usuarios; los resultados solo se reutilizan
-en `st.session_state`. Cambiar idioma conserva el contenido y los límites de la sesión.
+Ya no hay cargador de archivos ni descarga de plantilla en la interfaz. El lector
+CSV se conserva internamente para ejemplos y regresiones. Las mediciones y los
+resultados se mantienen solo en la sesión y sobreviven al cambio de idioma.
+Una medición aislada no permite predecir fallo, fecha ni kilometraje de mantenimiento.
+Los resultados corresponden a la última comprobación enviada, no a campos editados
+que aún no se han enviado. No se certifica el estado ni la seguridad del vehículo.
+
+### Cobertura real de fabricantes
+
+`catalog/manufacturer_references.json` contiene **8 recomendaciones contextuales,
+4 modelos, 1 marca y 1 parámetro**: profundidad del dibujo de neumáticos. Proceden
+exclusivamente de los manuales oficiales de EE. UU. de Tesla Model 3 (2024–2026),
+Model Y (2025–2026), Model S y Model X (2021–2026), verificados el 25.10.2026.
+El índice identifica las generaciones 2024+, 2025+ y 2021+, respectivamente.
+El usuario debe comprobar que el manual corresponde a su vehículo concreto.
+La app no verifica automáticamente VIN ni equipamiento; la versión se registra
+como información aportada por el usuario y requiere su confirmación del manual.
+
+Son recomendaciones de uso, **no valores nominales de fábrica ni límites legales**:
+el manual desaconseja el uso con dibujo menor de 3 mm en mojado y menor de 4 mm en
+nieve/aguanieve. Se conservan los valores publicados en mm, sin convertir pulgadas.
+La comparación usa `<`, como el texto original; igualar el valor no certifica aptitud.
+La presión recomendada depende de la etiqueta del vehículo: no se ha inventado una
+presión fija a partir del modelo.
+
+Se puede introducir cualquier marca/modelo, pero **no hay una base de datos de todos
+los coches del mundo**. Para ampliar la cobertura hacen falta documentación técnica
+por variante, condiciones de medición y derechos de reutilización o un proveedor
+con licencia. No se ha contratado ni conectado ningún proveedor comercial. No se
+confunden rangos físicos genéricos con referencias del fabricante.
+
+Cada registro incluye ámbito, parámetro, unidad, operador, valor, condiciones,
+URL oficial, sección, cita breve, fecha y SHA-256 del HTML decodificado y recodificado
+como UTF-8. No se redistribuyen manuales completos ni se consulta la red con datos
+introducidos por usuarios. Unidades incompatibles o referencias ambiguas no producen
+comparación. Añadir una referencia del mismo tipo solo requiere editar el JSON;
+parámetros nuevos requieren además su contrato y método de comparación.
+
+Fuentes: [Model 3](https://www.tesla.com/ownersmanual/model3/en_us/GUID-94F63B13-EA2C-45D9-83AB-5DCA6295D587.html),
+[Model Y](https://www.tesla.com/ownersmanual/modely/en_us/GUID-94F63B13-EA2C-45D9-83AB-5DCA6295D587.html),
+[Model S](https://www.tesla.com/ownersmanual/models/en_us/GUID-94F63B13-EA2C-45D9-83AB-5DCA6295D587.html),
+[Model X](https://www.tesla.com/ownersmanual/modelx/en_us/GUID-94F63B13-EA2C-45D9-83AB-5DCA6295D587.html).
 
 ## Catálogo y contrato
 
@@ -85,11 +120,11 @@ y tipos numéricos estándar. Los títulos originales de las fuentes no se tradu
 (comentarios `# revisar`), terminología de batería, presión de admisión y SCR del
 catálogo. `locales/glosario.md` lista los términos. No se certifica revisión nativa.
 
-**Textos de Streamlit que permanecen:** Upload, indicador MB per file/CSV, controles
-de tabla, opciones de menú de gráficos, accesibilidad nativa Skip to main content y
+**Textos nativos que pueden permanecer en inglés:** selector múltiple de parámetros
+(Choose options / Select all), controles de tabla, opciones de menú de gráficos,
+accesibilidad nativa Skip to main content y
 Stop durante ejecución pueden permanecer en inglés. Los números de los campos de
-entrada nativos usan punto decimal. Se minimizan con toolbarMode=minimal y evitando
-multiselect; no se emplea CSS dependiente de clases internas ni hacks del DOM.
+entrada nativos usan punto decimal. Se minimizan con toolbarMode=minimal ; no se emplea CSS dependiente de clases internas ni hacks del DOM.
 Esta es una limitación conocida respecto a una interfaz absolutamente monolingüe.
 
 ## Pruebas, evaluación y capturas
@@ -152,14 +187,19 @@ mapeo opcional no se ha implementado. No se ha realizado validación con una flo
 ## English quick start
 
 Install Python 3.12 dependencies, run `python -m streamlit run app.py`, select English
-or use `?lang=en`, then try the example fleet. Confirm thresholds in the manufacturer's
-manual. Indicative estimates do not replace professional inspection. Native Streamlit
+or use `?lang=en`. Enter vehicle details and measurements, confirm the applicable
+manual, then check readings. OEM reference coverage is limited to tyre tread
+recommendations for four Tesla models in the US; unsupported readings show no reference.
+The optional fleet demo is synthetic. Confirm thresholds in the manufacturer's manual. Indicative estimates do not replace professional inspection. Native Streamlit
 controls may remain English; vehicle scenarios are synthetic.
 
 ## Kurzanleitung auf Deutsch
 
 Installieren Sie die Abhängigkeiten mit Python 3.12 und starten Sie
 `python -m streamlit run app.py`. Wählen Sie Deutsch oder verwenden Sie `?lang=de`.
-Testen Sie die Beispielflotte. Prüfen Sie Grenzwerte im Herstellerhandbuch.
+Geben Sie Fahrzeugdaten und Messwerte ein und prüfen Sie das passende Handbuch.
+Herstellerreferenzen umfassen bisher nur Reifenprofiltiefen für vier Tesla-Modelle
+in den USA. Ohne passende Referenz erfolgt kein Herstellervergleich.
+Die optionale Beispielflotte ist synthetisch. Prüfen Sie Grenzwerte im Herstellerhandbuch.
 Orientierende Schätzungen ersetzen keine fachgerechte Prüfung. Einige native
 Streamlit-Bedienelemente bleiben englisch. Die Fahrzeugszenarien sind synthetisch.

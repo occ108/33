@@ -29,30 +29,27 @@ def main():
  st.markdown(f'<h1 style="font-size:1.8rem;margin-bottom:0">{t("product")}</h1>',unsafe_allow_html=True)
  st.caption(t('tagline'))
  st.info(t('honesty'))
- vehicle=st.selectbox(t('vehicle'),list(CATALOG['vehicles']),format_func=lambda k:CATALOG['vehicles'][k][lang],key='vehicle')
+ st.session_state.vehicle=st.session_state.get('selected_vehicle','car')
+ vehicle=st.selectbox(t('vehicle'),list(CATALOG['vehicles']),format_func=lambda k:CATALOG['vehicles'][k][lang],key='vehicle',index=None,on_change=remember_selection,args=('vehicle','selected_vehicle'))
  options=[k for k,c in CATALOG['components'].items() if vehicle in c['vehicles']]
- component=st.selectbox(t('component'),options,format_func=lambda k:CATALOG['components'][k]['name'][lang],key='component')
+ st.session_state.component=st.session_state.get('selected_component') if st.session_state.get('selected_component') in options else options[0]
+ component=st.selectbox(t('component'),options,format_func=lambda k:CATALOG['components'][k]['name'][lang],key='component',index=None,on_change=remember_selection,args=('component','selected_component'))
  spec=CATALOG['components'][component]
  st.caption(spec['description'][lang])
  if spec['critical']:st.warning(t('critical'))
  st.caption(t('interval',metric=spec['usage_metric']))
- cols=spec['parameters']
- template=pd.DataFrame(columns=['timestamp','asset_id','vehicle_type','component','odometer_km','operating_hours']+cols).to_csv(index=False).encode()
- st.caption(t('unit_legend',columns=' · '.join(f'{c} [{PARAMETERS[c]["unit"]}]' for c in cols)))
- if not cols:st.info(t('no_parameters'))
- with st.container(border=True):
-  uploaded=st.file_uploader(t('upload'),type=['csv'],key='csv_upload')
-  if uploaded is not None:
-   raw=uploaded.getvalue();digest=hashlib.sha256(raw).hexdigest()
-   if digest!=st.session_state.get('upload_digest'):
-    st.session_state.upload_digest=digest;st.session_state.content=raw;st.session_state.synthetic=False
-  if st.button(t('demo'),key='demo',type='primary'):
-   st.session_state.content=(ROOT/'examples/vehicles/fleet.csv').read_bytes();st.session_state.synthetic=True
-   st.session_state.sensor='brake_pad_mm'
-  st.download_button(t('template'),template,'template.csv','text/csv',key='template')
+ from manual_entry import render_manual_entry
+ render_manual_entry(vehicle,component,spec,lang)
+ st.session_state.language_switch=False
+ if st.button(t('demo'),key='demo',type='secondary'):
+  st.session_state.pop('manual_snapshot',None)
+  st.session_state.content=(ROOT/'examples/vehicles/fleet.csv').read_bytes();st.session_state.synthetic=True
+  st.session_state.sensor='brake_pad_mm'
+  st.rerun()
  st.caption(t('privacy'));st.caption(t('cold'))
  if 'content' not in st.session_state:
-  st.info(t('empty'));render_resources(lang);return
+  if 'manual_snapshot' not in st.session_state:st.info(t('empty'))
+  render_resources(lang);return
  try:
   df=load_csv(st.session_state.content)
  except DataError as error:
@@ -186,7 +183,15 @@ def main():
   st.download_button(t('download_estimates'),safe_csv(pd.DataFrame([{'asset_id':asset,'sensor':sensor,**asdict(estimate)}]).drop(columns=['message','warnings','operating_message'])),'estimate.csv','text/csv',key='estimate_download')
  render_resources(lang)
 
+def remember_selection(widget,stored):
+ if st.session_state.get('language_switch'):return
+ value=st.session_state[widget]
+ choices=CATALOG['vehicles'] if widget=='vehicle' else {k:c['name'] for k,c in CATALOG['components'].items()}
+ for canonical,names in choices.items():
+  if value==canonical or value in names.values():st.session_state[stored]=canonical;break
+
 def change_language():
+ st.session_state.language_switch=True
  st.session_state.lang=st.session_state.language_choice
  st.query_params['lang']=st.session_state.lang
 
@@ -195,7 +200,7 @@ def render_resources(lang):
   with st.expander(t('format')):
    st.write(t('format_help'))
    if st.button(t('small_demo'),key='small_demo'):
-    st.session_state.content=EXAMPLE.read_bytes();st.session_state.synthetic=True;st.rerun()
+    st.session_state.pop('manual_snapshot',None);st.session_state.content=EXAMPLE.read_bytes();st.session_state.synthetic=True;st.rerun()
   query=st.text_input(t('search'),key='resource_search')
   for entry in load_catalog()['datasets']:
    if query.casefold() not in entry['name'].casefold():continue

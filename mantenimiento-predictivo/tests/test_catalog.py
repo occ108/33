@@ -37,7 +37,7 @@ class CatalogTests(unittest.TestCase):
         app=AppTest.from_file(str(Path(__file__).resolve().parents[1]/'app.py')).run(timeout=30)
         self.assertEqual(len(app.exception),0)
         self.assertTrue(any('Case Western' in v.value for v in app.markdown))
-        app.text_input[0].set_value('MetroPT').run(timeout=30)
+        app.text_input(key='resource_search').set_value('MetroPT').run(timeout=30)
         self.assertEqual(len(app.exception),0)
         names='\n'.join(v.value for v in app.markdown)
         self.assertIn('MetroPT',names)

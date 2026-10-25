@@ -26,3 +26,6 @@
 !assets/**
 !.streamlit/
 !.streamlit/config.toml
+
+!manufacturer.py
+!manual_entry.py
