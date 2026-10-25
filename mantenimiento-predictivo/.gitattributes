@@ -1,0 +1,2 @@
+# Preserve the upstream dataset bytes, BOM and CRLF for SHA-256 verification.
+resources/ai4i2020.csv binary
