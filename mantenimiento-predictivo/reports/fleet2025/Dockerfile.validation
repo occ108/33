@@ -1,0 +1,10 @@
+FROM mantenimiento-predictivo:manual-fabricantes
+USER root
+RUN --mount=type=bind,target=/review,ro \
+ cp /review/app.py /review/fleet_catalog.py /review/fleet_resources.py /app/ && \
+ cp -R /review/catalog/fleet2025 /app/catalog/ && \
+ cp -R /review/schemas /app/ && \
+ cp /review/locales/*.toml /app/locales/ && \
+ chmod -R a+rX /app/catalog/fleet2025 /app/schemas /app/locales && \
+ chmod a+r /app/app.py /app/fleet_catalog.py /app/fleet_resources.py
+USER app

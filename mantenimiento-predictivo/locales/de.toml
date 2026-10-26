@@ -162,3 +162,16 @@ manual_no_reference = "Keine passende verifizierte Referenz. Ein Herstellervergl
 manual_reference = "Empfehlung: Unter {value} {unit} bei diesen Bedingungen nicht verwenden: {condition}. Kein universeller Wert und keine rechtliche Bescheinigung."
 manual_source_scope = "Handbuch: {manual}. Quelle geprüft: {date}."
 manual_coverage_title = "Abdeckung und Herstellerhandbücher"
+
+# Verified fleet catalogue coverage
+fleet_title = "Europäischer und US-Fahrzeugmarkt: verifizierte Abdeckung"
+fleet_counts = "Verkaufsjahr {year}: {models} Modelle mit verifizierten Verkäufen über 50 Einheiten; {variants} verifizierte technische Varianten und {limits} Herstellergrenzwerte in diesem neuen Katalog."
+# revisar
+fleet_boundary = "Diese Stichprobe deckt nicht den gesamten Fahrzeugbestand ab. Verkaufszahlen belegen keine diagnostische Abdeckung. Fehlende Herstellerparameter und variantenspezifische DTC-Zuordnungen werden nicht für Ihre Messwertvergleiche verwendet. Bisherige Reifenreferenzen bleiben getrennt."
+fleet_europe = "Europa"
+fleet_sales = "Verkäufe {year}: {units} Einheiten · {market}. Herstellerquelle."
+# revisar
+fleet_dtc = "Zusätzlich: {count} regulatorische Beispiele für die EVAP-DTC-Kategorie, ohne vollständige SAE-Definitionen oder automatische Zuordnung zu diesen Modellen. Ein DTC belegt nicht, welches Bauteil defekt ist."
+fleet_france = "Frankreich"
+fleet_market_code = "Markt {code}"
+fleet_unavailable = "Der Abdeckungskatalog ist vorübergehend nicht verfügbar. Sie können weiterhin Messwerte eingeben; Referenzen aus diesem Katalog werden nicht angewendet."

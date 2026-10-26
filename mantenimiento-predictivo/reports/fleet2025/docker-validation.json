@@ -1,0 +1,7 @@
+{
+  "validation_image": "mantenimiento-predictivo:fleet2025-validation",
+  "source_hashes_match": true,
+  "base_image": "mantenimiento-predictivo:manual-fabricantes",
+  "clean_production_dockerfile_build": false,
+  "reason": "Disk space bounded; validation image reuses unchanged pinned dependencies. Clean build remains a release requirement."
+}

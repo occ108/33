@@ -1,0 +1,868 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "dataset_kind",
+    "as_of",
+    "region_policy",
+    "sources",
+    "models",
+    "variants",
+    "sales",
+    "parameters",
+    "dtcs",
+    "faults",
+    "coverage",
+    "thresholds"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "dataset_kind": {
+      "enum": [
+        "curated",
+        "benchmark"
+      ]
+    },
+    "as_of": {
+      "type": "string",
+      "format": "date"
+    },
+    "region_policy": {
+      "const": "europe-us-v1"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "models": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/model"
+      }
+    },
+    "variants": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/variant"
+      }
+    },
+    "sales": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sale"
+      }
+    },
+    "parameters": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/parameter"
+      }
+    },
+    "dtcs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/dtc"
+      }
+    },
+    "faults": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/fault"
+      }
+    },
+    "coverage": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/coverage"
+      }
+    },
+    "thresholds": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/threshold"
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axion.invalid/schemas/fleet-catalog-v1.json",
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "publisher",
+        "source_kind",
+        "url",
+        "retrieved_at",
+        "published_at",
+        "sha256",
+        "locator",
+        "quote",
+        "reuse",
+        "license",
+        "redistribution_allowed"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_kind": {
+          "enum": [
+            "sales",
+            "oem_technical",
+            "regulation",
+            "metadata",
+            "standard"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "retrieved_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "published_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reuse": {
+          "enum": [
+            "citation_only",
+            "open_licensed",
+            "licensed",
+            "unknown"
+          ]
+        },
+        "license": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "redistribution_allowed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "make",
+        "name",
+        "vehicle_class",
+        "identity_status",
+        "source_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+        },
+        "make": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "vehicle_class": {
+          "enum": [
+            "passenger_car",
+            "suv",
+            "light_commercial",
+            "heavy_commercial",
+            "commercial_unspecified"
+          ]
+        },
+        "identity_status": {
+          "enum": [
+            "verified",
+            "candidate"
+          ]
+        },
+        "source_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+        }
+      }
+    },
+    "variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "model_id",
+        "market",
+        "model_year",
+        "generation",
+        "engine_code",
+        "transmission_code",
+        "variant_code",
+        "battery_code",
+        "ecu_software",
+        "powertrain",
+        "verification",
+        "source_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+        },
+        "model_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+        },
+        "market": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model_year": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1886,
+              "maximum": 2100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "generation": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "engine_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "transmission_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "variant_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "battery_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ecu_software": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "powertrain": {
+          "enum": [
+            "ice",
+            "hev",
+            "phev",
+            "bev",
+            "unknown"
+          ]
+        },
+        "verification": {
+          "enum": [
+            "verified",
+            "pending"
+          ]
+        },
+        "source_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "sale": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "model_id",
+        "source_id",
+        "locator",
+        "quote",
+        "year",
+        "period_start",
+        "period_end",
+        "market",
+        "metric",
+        "units",
+        "identity_scope",
+        "geography_status",
+        "verification"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+        },
+        "model_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+        },
+        "source_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        },
+        "year": {
+          "type": "integer",
+          "minimum": 2000,
+          "maximum": 2100
+        },
+        "period_start": {
+          "type": "string",
+          "format": "date"
+        },
+        "period_end": {
+          "type": "string",
+          "format": "date"
+        },
+        "market": {
+          "type": "string",
+          "minLength": 1
+        },
+        "metric": {
+          "enum": [
+            "sales",
+            "registrations",
+            "deliveries"
+          ]
+        },
+        "units": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "identity_scope": {
+          "enum": [
+            "exact_model",
+            "family",
+            "brand"
+          ]
+        },
+        "geography_status": {
+          "enum": [
+            "in_scope",
+            "mixed_region",
+            "unverified"
+          ]
+        },
+        "verification": {
+          "enum": [
+            "verified",
+            "pending"
+          ]
+        }
+      }
+    },
+    "parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "column",
+        "name",
+        "unit",
+        "physical_min",
+        "physical_max"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+        },
+        "column": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "es",
+            "en",
+            "de"
+          ],
+          "properties": {
+            "es": {
+              "type": "string",
+              "minLength": 1
+            },
+            "en": {
+              "type": "string",
+              "minLength": 1
+            },
+            "de": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "physical_min": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "physical_max": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "dtc": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "code",
+        "namespace",
+        "definition_kind",
+        "full_sae_description",
+        "make",
+        "ecu",
+        "protocol",
+        "description",
+        "verification",
+        "source_id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^[PBCU][0-3][0-9A-F]{3}$"
+        },
+        "namespace": {
+          "enum": [
+            "generic",
+            "manufacturer"
+          ]
+        },
+        "definition_kind": {
+          "enum": [
+            "regulatory_category",
+            "sae_definition",
+            "oem_definition"
+          ]
+        },
+        "full_sae_description": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "make": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ecu": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "protocol": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "es",
+            "en",
+            "de"
+          ],
+          "properties": {
+            "es": {
+              "type": "string",
+              "minLength": 1
+            },
+            "en": {
+              "type": "string",
+              "minLength": 1
+            },
+            "de": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "verification": {
+          "enum": [
+            "verified",
+            "pending"
+          ]
+        },
+        "source_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "fault": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "category",
+        "name",
+        "systems",
+        "critical"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+        },
+        "category": {
+          "enum": [
+            "mechanical",
+            "electrical",
+            "thermal",
+            "predictive",
+            "dtc"
+          ]
+        },
+        "name": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "es",
+            "en",
+            "de"
+          ],
+          "properties": {
+            "es": {
+              "type": "string",
+              "minLength": 1
+            },
+            "en": {
+              "type": "string",
+              "minLength": 1
+            },
+            "de": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "systems": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "critical": {
+          "type": "boolean"
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "variant_id",
+        "fault_id",
+        "dtc_ids",
+        "parameters",
+        "status",
+        "source_id",
+        "reason"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+        },
+        "variant_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+        },
+        "fault_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+        },
+        "dtc_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+          }
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+          }
+        },
+        "status": {
+          "enum": [
+            "documented",
+            "missing_oem"
+          ]
+        },
+        "source_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "threshold": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "variant_id",
+        "parameter_id",
+        "unit",
+        "condition",
+        "lower",
+        "upper",
+        "lower_inclusive",
+        "upper_inclusive",
+        "status",
+        "source_id",
+        "valid_from",
+        "valid_until",
+        "reason"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+        },
+        "variant_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+        },
+        "parameter_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "condition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lower": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "upper": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lower_inclusive": {
+          "type": "boolean"
+        },
+        "upper_inclusive": {
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "verified",
+            "missing_oem"
+          ]
+        },
+        "source_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9_.:-]{0,119}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_from": {
+          "type": "string",
+          "format": "date"
+        },
+        "valid_until": {
+          "type": "string",
+          "format": "date"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "results": [
+    {
+      "lang": "es",
+      "width": 1440,
+      "overflow": false,
+      "uploaders": 0,
+      "correctFranceAttribution": true
+    },
+    {
+      "lang": "es",
+      "width": 390,
+      "overflow": false,
+      "uploaders": 0,
+      "correctFranceAttribution": true
+    },
+    {
+      "lang": "en",
+      "width": 1440,
+      "overflow": false,
+      "uploaders": 0,
+      "correctFranceAttribution": true
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "overflow": false,
+      "uploaders": 0,
+      "correctFranceAttribution": true
+    },
+    {
+      "lang": "de",
+      "width": 1440,
+      "overflow": false,
+      "uploaders": 0,
+      "correctFranceAttribution": true
+    },
+    {
+      "lang": "de",
+      "width": 390,
+      "overflow": false,
+      "uploaders": 0,
+      "correctFranceAttribution": true
+    }
+  ],
+  "errors": []
+}

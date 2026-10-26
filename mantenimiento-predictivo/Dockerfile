@@ -15,10 +15,11 @@ RUN --mount=type=bind,target=/build-context \
     else \
       python -m pip install --no-cache-dir -r requirements.txt; \
     fi && python -m pip check
-COPY --chown=app:app app.py analysis.py exports.py catalog.py maintenance.py automotive.py data_contract.py i18n.py vehicle_analysis.py manufacturer.py manual_entry.py ./
+COPY --chown=app:app app.py analysis.py exports.py catalog.py maintenance.py automotive.py data_contract.py i18n.py vehicle_analysis.py manufacturer.py manual_entry.py fleet_catalog.py fleet_resources.py ./
 COPY --chown=app:app examples/ ./examples/
 COPY --chown=app:app resources/ ./resources/
 COPY --chown=app:app catalog/ ./catalog/
+COPY --chown=app:app schemas/ ./schemas/
 COPY --chown=app:app locales/ ./locales/
 COPY --chown=app:app assets/ ./assets/
 COPY --chown=app:app .streamlit/config.toml ./.streamlit/config.toml

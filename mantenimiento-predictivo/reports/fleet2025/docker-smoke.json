@@ -1,0 +1,20 @@
+{
+  "status": "ok",
+  "memory_limit_mib": 512,
+  "cpus": 1,
+  "checks": [
+    "validated_catalogue_14_models_no_oem_thresholds",
+    "read_only_database",
+    "app_es_en_de_no_upload",
+    "unavailable_catalogue_preserves_form"
+  ],
+  "files_sha256": {
+    "app.py": "93b8634f8ea8e74b9b8527c7a04ed6face6d104026ede84920fe2458b458eac6",
+    "fleet_catalog.py": "77d5a6688dcb6db02859ec711dfd2b02fae11e88745089df2d587a870d430a86",
+    "fleet_resources.py": "5ca65ffc88ff8db39195bf76b61fe5d132b1d19472875beff6b4aeee0b2bb80a",
+    "catalog/fleet2025/catalog.json": "7da9547473d3a5978eb168bfaa9a9627989e3cffb99691a9090567f059eeb9c0",
+    "catalog/fleet2025/catalog.sqlite": "99a810cb3aece705e3e26bbf000adfd03ce392f11585dd2bc234e2e04a8ab7f9",
+    "schemas/fleet-catalog-v1.schema.json": "284f655174125166960d71c986fe8d0ec0dc7a51fc1f27833544e8be3fb59057",
+    "schemas/fleet-catalog-v1.sql": "44429491d74617fd6fdfa74d58d3a69948d21635cb8c301d9d8c824a6011d978"
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "checked_at": "2026-10-26",
+  "sources": [
+    {
+      "id": "ecfr-40cfr-86-1806-17-b1",
+      "publisher": "U.S. eCFR (EPA rule text)",
+      "url": "https://www.ecfr.gov/current/title-40/chapter-I/subchapter-C/part-86/subpart-S/section-86.1806-17",
+      "title": "40 CFR 86.1806-17 — Onboard diagnostics",
+      "section": "(b)(1)",
+      "page": null,
+      "http_status": 200,
+      "sha256_raw_response": "14fbe45acd5775c8498fbb105b9da99c32fbcbc9920c1d4134b40737cb8ef13b",
+      "quote": "For a 0.020 inch leak, the DTC(s) shall be a generic SAE J2012 DTC that is specific to an EVAP system very small leak (e.g., P0456, P04EE, or P04EF) or an equivalent manufacturer-specific DTC that we approve.",
+      "verification": "exact_quote_verified",
+      "rights": "Federal regulatory text cited by link and short quotation. No SAE database licence obtained. eCFR is the authoritative but unofficial electronic CFR edition.",
+      "scope": "U.S. OBD regulation; MY2017 and later vehicles described in this paragraph. Not a model-specific OEM repair source."
+    }
+  ],
+  "dtc_regulatory_examples": [
+    {
+      "code": "P0456",
+      "namespace": "SAE J2012 generic",
+      "category_en": "EVAP system very small leak",
+      "source_id": "ecfr-40cfr-86-1806-17-b1",
+      "verification": "regulatory_category_verified_only",
+      "full_sae_description": null,
+      "oem_model_applicability": null,
+      "automatic_model_assignment_allowed": false,
+      "fault_causality": "A DTC reports a monitor condition, not a unique failed component."
+    },
+    {
+      "code": "P04EE",
+      "namespace": "SAE J2012 generic",
+      "category_en": "EVAP system very small leak",
+      "source_id": "ecfr-40cfr-86-1806-17-b1",
+      "verification": "regulatory_category_verified_only",
+      "full_sae_description": null,
+      "oem_model_applicability": null,
+      "automatic_model_assignment_allowed": false,
+      "fault_causality": "A DTC reports a monitor condition, not a unique failed component."
+    },
+    {
+      "code": "P04EF",
+      "namespace": "SAE J2012 generic",
+      "category_en": "EVAP system very small leak",
+      "source_id": "ecfr-40cfr-86-1806-17-b1",
+      "verification": "regulatory_category_verified_only",
+      "full_sae_description": null,
+      "oem_model_applicability": null,
+      "automatic_model_assignment_allowed": false,
+      "fault_causality": "A DTC reports a monitor condition, not a unique failed component."
+    }
+  ],
+  "regulatory_test_condition": {
+    "effective_leak_diameter": 0.02,
+    "unit": "inch",
+    "meaning": "Regulatory OBD leak-detection test condition under specified monitoring conditions, not a predictive sensor alert threshold or OEM nominal operating parameter.",
+    "unit_conversion_performed": false,
+    "use_in_vehicle_sensor_thresholds_allowed": false,
+    "source_id": "ecfr-40cfr-86-1806-17-b1"
+  },
+  "verified_model_specific_sensor_thresholds": [],
+  "limitations": [
+    "No OEM model/engine/year-specific numeric threshold verified.",
+    "No exhaustive SAE J2012/J2012DA or manufacturer-specific DTC catalogue licensed or downloaded.",
+    "P04EE and P04EF full SAE descriptions were not verified; only their statutory category is confirmed.",
+    "No model-specific correlation to Toyota/VW/Ford may be inferred from the federal example list."
+  ],
+  "unavailable_sources": [
+    {
+      "url": "https://www.fordservicecontent.com/ford_content/catalog/motorcraft/OBDSM2500.pdf",
+      "result": "HTTP 404; do not cite as verified"
+    },
+    {
+      "url": "https://www.motorcraftservice.com/FreeResources/OBD",
+      "result": "HTTP 503; not accessible"
+    },
+    {
+      "url": "https://www.sae.org/standards/content/j2012_201612/",
+      "result": "HTTP 200 but generic SPA shell only; standard contents not verified"
+    },
+    {
+      "url": "https://www.sae.org/standards/content/j2012da_202506/",
+      "result": "HTTP 200 but generic SPA shell only; edition and contents not verified"
+    }
+  ]
+}

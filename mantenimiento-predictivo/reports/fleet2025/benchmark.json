@@ -1,0 +1,25 @@
+{
+  "kind": "synthetic_index_microbenchmark_not_Render_SLA",
+  "rows_added": 100000,
+  "queries_per_case": 1000,
+  "populate_seconds": 1.0982736200021463,
+  "peak_rss_mib": 22.125,
+  "database_mib": 87.01171875,
+  "query_plan": [
+    [
+      3,
+      0,
+      44,
+      "SEARCH threshold USING INDEX idx_threshold_lookup (variant_id=? AND parameter_id=? AND condition=? AND status=?)"
+    ]
+  ],
+  "pending_hit": {
+    "p50_ms": 0.004977,
+    "p95_ms": 0.011788
+  },
+  "verified_miss": {
+    "p50_ms": 0.001752,
+    "p95_ms": 0.002263
+  },
+  "limitations": "Single local SQLite process, warmed OS cache; no concurrency, network, full import/schema throughput or real diagnostics evaluated."
+}

@@ -4,3 +4,6 @@ numpy==2.5.4
 scikit-learn==1.9.1
 scipy==1.18.1
 altair==6.3.0
+
+# Existing pinned Streamlit dependency, now used directly for catalogue contracts.
+jsonschema==4.26.0

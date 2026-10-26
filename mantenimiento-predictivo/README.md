@@ -1,7 +1,22 @@
 # Axion — revisión de señales industriales y de automoción
 
-Rama de revisión: **automocion-ui**. Los nuevos formularios y referencias están preparados para revisión; todavía no se han
-enviado a `deploy/mantenimiento-predictivo`. La versión Axion anterior sí está publicada.
+## Ampliación Europa/EE. UU. — revisión 26.10.2026
+
+Nueva rama `data-eu-us-2025`: catálogo con **14 modelos comerciales** que superan
+50 ventas verificadas en 2025 (2 marcas), esquema JSON/SQL, importación SQLite
+atómica y cobertura informativa es/en/de. **Cero variantes técnicas, umbrales OEM
+o enlaces DTC-modelo verificados en este catálogo nuevo**: no se aplican a las
+mediciones del usuario ni sustituyen las referencias de neumáticos anteriores.
+No hay cobertura completa del parque ni scheduler o proveedor de datos conectado.
+
+Consulte [arquitectura, fuentes, QA, limitaciones y comandos](docs/FLEET2025.md).
+La base se reproduce con `python scripts/build_fleet_catalog.py`; la puerta
+`python scripts/check_fleet_release.py --profile diagnostic` devuelve 2 de forma
+intencionada hasta completar las fuentes y cobertura necesarias. Esta ampliación
+no se ha publicado ni enviado a `deploy/mantenimiento-predictivo`.
+
+Base publicada: `a00bfec`, con formulario y referencias de neumáticos. La ampliación
+de catálogo de esta rama es una entrega nueva para revisión.
 
 ## Ejecutar (Python 3.12)
 

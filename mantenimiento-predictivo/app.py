@@ -196,6 +196,8 @@ def change_language():
  st.query_params['lang']=st.session_state.lang
 
 def render_resources(lang):
+ from fleet_resources import render_fleet_resources
+ render_fleet_resources(lang)
  with st.expander(t('resources')):
   with st.expander(t('format')):
    st.write(t('format_help'))

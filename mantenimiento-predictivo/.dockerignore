@@ -29,3 +29,8 @@
 
 !manufacturer.py
 !manual_entry.py
+
+!fleet_catalog.py
+!fleet_resources.py
+!schemas/
+!schemas/**

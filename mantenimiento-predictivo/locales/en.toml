@@ -162,3 +162,16 @@ manual_no_reference = "No applicable verified reference. No factory comparison i
 manual_reference = "Recommendation: do not use below {value} {unit} under these conditions: {condition}. This is not a universal value or legal certification."
 manual_source_scope = "Manual: {manual}. Source checked: {date}."
 manual_coverage_title = "Coverage and manufacturer manuals"
+
+# Verified fleet catalogue coverage
+fleet_title = "European and US fleet: verified coverage"
+fleet_counts = "Sales year {year}: {models} models with verified sales above 50 units; {variants} verified technical variants and {limits} OEM thresholds in this new catalogue."
+# revisar
+fleet_boundary = "This sample does not cover the entire fleet. Sales do not establish diagnostic coverage. Missing factory parameters and variant-specific DTC links are not used to compare your measurements. Earlier tyre references remain separate."
+fleet_europe = "Europe"
+fleet_sales = "Sales {year}: {units} units · {market}. Manufacturer source."
+# revisar
+fleet_dtc = "Also: {count} regulatory EVAP DTC category examples, without full SAE definitions or automatic assignment to these models. A DTC does not establish which part has failed."
+fleet_france = "France"
+fleet_market_code = "Market {code}"
+fleet_unavailable = "The coverage catalogue is temporarily unavailable. You can still enter measurements; references from this catalogue will not be applied."

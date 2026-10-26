@@ -156,3 +156,14 @@ manual_no_reference = "Sin referencia verificada aplicable. No se emite una valo
 manual_reference = "Recomendación: no utilizar por debajo de {value} {unit} en estas condiciones: {condition}. No es un valor universal ni una certificación legal."
 manual_source_scope = "Manual: {manual}. Fuente comprobada: {date}."
 manual_coverage_title = "Cobertura y manuales de fabricantes"
+
+# Verified fleet catalogue coverage
+fleet_title = "Parque europeo y estadounidense: cobertura verificada"
+fleet_counts = "Año comercial {year}: {models} modelos con ventas verificadas superiores a 50 unidades; {variants} variantes técnicas verificadas y {limits} umbrales OEM en este catálogo nuevo."
+fleet_boundary = "Esta muestra no representa todo el parque. Las ventas no acreditan cobertura diagnóstica. Los parámetros de fábrica y relaciones DTC por versión que faltan no se utilizan para comparar tus mediciones. Las referencias de neumáticos anteriores permanecen separadas."
+fleet_europe = "Europa"
+fleet_sales = "Ventas {year}: {units} unidades · {market}. Fuente del fabricante."
+fleet_dtc = "Además: {count} ejemplos regulatorios de categoría DTC EVAP, sin definiciones SAE completas ni asignación automática a estos modelos. Un DTC no demuestra qué pieza está averiada."
+fleet_france = "Francia"
+fleet_market_code = "Mercado {code}"
+fleet_unavailable = "El catálogo de cobertura no está disponible temporalmente. Puedes seguir introduciendo mediciones; no se aplicarán referencias de este catálogo."

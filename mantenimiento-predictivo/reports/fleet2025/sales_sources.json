@@ -1,0 +1,375 @@
+{
+  "retrieved_at": "2026-10-26T13:24:57.631952+00:00",
+  "sources": [
+    {
+      "id": "renault_2025_world",
+      "url": "https://media.renault.com/renault-brand-achieves-10-global-passenger-car-sales-growth-in-2025-driven-by-successful-product-offensive/",
+      "title": "Renault brand achieves +10% global passenger car sales growth in 2025, driven by successful product offensive",
+      "publisher": "Renault",
+      "retrieved_at": "2026-10-26T13:24:57.631952+00:00",
+      "sha256": "3b83ca243e6201460b765790f5d95706c5425a33365fe8a17fdd1b9d8116ff35",
+      "sha256_kind": "raw_response_bytes_saved_by_curl",
+      "publication_date": "2026-01-20",
+      "source_kind": "manufacturer_sales_release",
+      "rights": "Publicly accessible official release; factual counts and short citations only. No licence for bulk manual/DTC redistribution established.",
+      "year_evidence_quote": "Renault delivered a strong performance in 2025, with 1,628,030 vehicles sold worldwide"
+    },
+    {
+      "id": "renault_fr_2025",
+      "url": "https://media.renault.com/resultats-commerciaux-2025-succes-des-nouveaux-produits-strategie-commerciale-robuste-et-leadership-technologique-renforcent-la-domination-de-renault-sur-le-marche-francais/",
+      "title": "Résultats commerciaux 2025 : succès des nouveaux produits, stratégie commerciale robuste et leadership technologique renforcent la domination de Renault sur le marché français",
+      "publisher": "Renault",
+      "retrieved_at": "2026-10-26T13:24:57.631952+00:00",
+      "sha256": "3f6e80b6567f081e7c71d4d93ecaa10e23a509d06ff62c561a3023f4db74a588",
+      "sha256_kind": "raw_response_bytes_saved_by_curl",
+      "publication_date": "2026-01-02",
+      "source_kind": "manufacturer_sales_release",
+      "rights": "Publicly accessible official release; factual counts and short citations only. No licence for bulk manual/DTC redistribution established.",
+      "year_evidence_quote": "Résultats commerciaux 2025"
+    },
+    {
+      "id": "subaru_us_2025",
+      "url": "https://media.subaru.com/pressrelease/2410/subaru-america-reports-december-2025-year-end-sales",
+      "title": "SUBARU OF AMERICA REPORTS DECEMBER 2025 AND YEAR-END SALES RESULTS",
+      "publisher": "Subaru of America",
+      "retrieved_at": "2026-10-26T13:24:57.631952+00:00",
+      "sha256": "1dfe5da9fee9c5155d6a4562ebdac87936fa450131af79547ed1863548bdfae1",
+      "sha256_kind": "raw_response_bytes_saved_by_curl",
+      "publication_date": "2026-01-05",
+      "source_kind": "manufacturer_sales_release",
+      "rights": "Publicly accessible official release; factual counts and short citations only. No licence for bulk manual/DTC redistribution established.",
+      "year_evidence_quote": "Subaru ended calendar year 2025 with 643,591 vehicle sales"
+    }
+  ],
+  "sales_facts": [
+    {
+      "make": "Renault",
+      "model": "Clio 5",
+      "model_scope": "marketing_model_generation",
+      "region": "EUROPE",
+      "country": null,
+      "calendar_year": 2025,
+      "metric": "sales",
+      "units": 243401,
+      "source_id": "renault_2025_world",
+      "locator": "Our European best sellers | product highlights / Clio 5",
+      "quote": "Clio 5 sales increased by +4.5% vs. 2024 reaching 243,401 units in its final year on the market (N°2 passenger car in Europe after Sandero).",
+      "qualifiers": [
+        "Europe is the manufacturer-reported geographic scope; no EU-only country breakdown supplied.",
+        "Count covers model, not an engine/ECU or model-year variant."
+      ],
+      "eligibility_threshold": 50,
+      "comparison": "strictly_greater_than",
+      "eligible_by_reported_sales": true
+    },
+    {
+      "make": "Renault",
+      "model": "Kangoo VAN",
+      "source_model_label": "Kangoo",
+      "model_scope": "light_commercial_model_family",
+      "region": "EUROPE",
+      "country": "FR",
+      "calendar_year": 2025,
+      "metric": "sales",
+      "units": 24405,
+      "source_id": "renault_fr_2025",
+      "locator": "Sur le marché VU / podium des ventes Trafic, Master, Kangoo",
+      "quote": "Kangoo complète le podium avec 24 405 unités.",
+      "qualifiers": [
+        "Country FR is a subset of Europe. This is NOT a Europe total.",
+        "Kangoo VAN denotes the LCV scope of the paragraph; not passenger Kangoo.",
+        "Article year and market: Résultats commerciaux 2025 ... marché français. Section Sur le marché VU states véhicules vendus and podium des ventes."
+      ],
+      "eligibility_threshold": 50,
+      "comparison": "strictly_greater_than",
+      "eligible_by_reported_sales": true
+    },
+    {
+      "make": "Subaru",
+      "model": "Forester",
+      "model_scope": "carline",
+      "region": "US",
+      "country": "US",
+      "calendar_year": 2025,
+      "metric": "sales",
+      "units": 175070,
+      "source_id": "subaru_us_2025",
+      "locator": "Carline sales table / Forester row / Dec-25 YTD (not Dec-25 MTD)",
+      "quote": "Forester 15,393 17,149 -10.2% 175,070 175,521 -0.3%",
+      "qualifiers": [
+        "2025 YTD in the December report covers the full calendar year.",
+        "Forester carline covers variants; no engine/ECU calibration coverage is inferred."
+      ],
+      "eligibility_threshold": 50,
+      "comparison": "strictly_greater_than",
+      "eligible_by_reported_sales": true,
+      "quote_normalization": "HTML table cell text joined with single spaces; column meaning is in locator."
+    },
+    {
+      "make": "Subaru",
+      "model": "Ascent",
+      "model_scope": "carline",
+      "region": "US",
+      "country": "US",
+      "calendar_year": 2025,
+      "metric": "sales",
+      "units": 44400,
+      "source_id": "subaru_us_2025",
+      "locator": "Carline sales table / Ascent / Dec-25 YTD",
+      "quote": "Ascent 5,022 4,675 7.4% 44,400 56,286 -21.1%",
+      "qualifiers": [
+        "2025 YTD in the December report covers the full calendar year.",
+        "Forester carline covers variants; no engine/ECU calibration coverage is inferred."
+      ],
+      "eligibility_threshold": 50,
+      "comparison": "strictly_greater_than",
+      "eligible_by_reported_sales": true,
+      "quote_normalization": "HTML table cell text joined with single spaces; column meaning is in locator."
+    },
+    {
+      "make": "Subaru",
+      "model": "BRZ",
+      "model_scope": "carline",
+      "region": "US",
+      "country": "US",
+      "calendar_year": 2025,
+      "metric": "sales",
+      "units": 2882,
+      "source_id": "subaru_us_2025",
+      "locator": "Carline sales table / BRZ / Dec-25 YTD",
+      "quote": "BRZ 229 337 -32.1% 2,882 3,345 -13.8%",
+      "qualifiers": [
+        "2025 YTD in the December report covers the full calendar year.",
+        "Forester carline covers variants; no engine/ECU calibration coverage is inferred."
+      ],
+      "eligibility_threshold": 50,
+      "comparison": "strictly_greater_than",
+      "eligible_by_reported_sales": true,
+      "quote_normalization": "HTML table cell text joined with single spaces; column meaning is in locator."
+    },
+    {
+      "make": "Subaru",
+      "model": "Crosstrek",
+      "model_scope": "carline",
+      "region": "US",
+      "country": "US",
+      "calendar_year": 2025,
+      "metric": "sales",
+      "units": 191724,
+      "source_id": "subaru_us_2025",
+      "locator": "Carline sales table / Crosstrek / Dec-25 YTD",
+      "quote": "Crosstrek 16,573 17,088 -3% 191,724 181,811 5.5%",
+      "qualifiers": [
+        "2025 YTD in the December report covers the full calendar year.",
+        "Forester carline covers variants; no engine/ECU calibration coverage is inferred."
+      ],
+      "eligibility_threshold": 50,
+      "comparison": "strictly_greater_than",
+      "eligible_by_reported_sales": true,
+      "quote_normalization": "HTML table cell text joined with single spaces; column meaning is in locator."
+    },
+    {
+      "make": "Subaru",
+      "model": "Impreza",
+      "model_scope": "carline",
+      "region": "US",
+      "country": "US",
+      "calendar_year": 2025,
+      "metric": "sales",
+      "units": 27942,
+      "source_id": "subaru_us_2025",
+      "locator": "Carline sales table / Impreza / Dec-25 YTD",
+      "quote": "Impreza 1,799 3,099 -41.9% 27,942 31,366 -10.9%",
+      "qualifiers": [
+        "2025 YTD in the December report covers the full calendar year.",
+        "Forester carline covers variants; no engine/ECU calibration coverage is inferred."
+      ],
+      "eligibility_threshold": 50,
+      "comparison": "strictly_greater_than",
+      "eligible_by_reported_sales": true,
+      "quote_normalization": "HTML table cell text joined with single spaces; column meaning is in locator."
+    },
+    {
+      "make": "Subaru",
+      "model": "Legacy",
+      "model_scope": "carline",
+      "region": "US",
+      "country": "US",
+      "calendar_year": 2025,
+      "metric": "sales",
+      "units": 22212,
+      "source_id": "subaru_us_2025",
+      "locator": "Carline sales table / Legacy / Dec-25 YTD",
+      "quote": "Legacy 1,935 1,676 15.5% 22,212 19,591 13.4%",
+      "qualifiers": [
+        "2025 YTD in the December report covers the full calendar year.",
+        "Forester carline covers variants; no engine/ECU calibration coverage is inferred."
+      ],
+      "eligibility_threshold": 50,
+      "comparison": "strictly_greater_than",
+      "eligible_by_reported_sales": true,
+      "quote_normalization": "HTML table cell text joined with single spaces; column meaning is in locator."
+    },
+    {
+      "make": "Subaru",
+      "model": "Outback",
+      "model_scope": "carline",
+      "region": "US",
+      "country": "US",
+      "calendar_year": 2025,
+      "metric": "sales",
+      "units": 157716,
+      "source_id": "subaru_us_2025",
+      "locator": "Carline sales table / Outback / Dec-25 YTD",
+      "quote": "Outback 14,773 14,885 -0.8% 157,716 168,771 -6.6%",
+      "qualifiers": [
+        "2025 YTD in the December report covers the full calendar year.",
+        "Forester carline covers variants; no engine/ECU calibration coverage is inferred."
+      ],
+      "eligibility_threshold": 50,
+      "comparison": "strictly_greater_than",
+      "eligible_by_reported_sales": true,
+      "quote_normalization": "HTML table cell text joined with single spaces; column meaning is in locator."
+    },
+    {
+      "make": "Subaru",
+      "model": "Solterra",
+      "model_scope": "carline",
+      "region": "US",
+      "country": "US",
+      "calendar_year": 2025,
+      "metric": "sales",
+      "units": 10715,
+      "source_id": "subaru_us_2025",
+      "locator": "Carline sales table / Solterra / Dec-25 YTD",
+      "quote": "Solterra 498 1,165 -57.3% 10,715 12,447 -13.9%",
+      "qualifiers": [
+        "2025 YTD in the December report covers the full calendar year.",
+        "Forester carline covers variants; no engine/ECU calibration coverage is inferred."
+      ],
+      "eligibility_threshold": 50,
+      "comparison": "strictly_greater_than",
+      "eligible_by_reported_sales": true,
+      "quote_normalization": "HTML table cell text joined with single spaces; column meaning is in locator."
+    },
+    {
+      "make": "Subaru",
+      "model": "WRX",
+      "model_scope": "carline",
+      "region": "US",
+      "country": "US",
+      "calendar_year": 2025,
+      "metric": "sales",
+      "units": 10930,
+      "source_id": "subaru_us_2025",
+      "locator": "Carline sales table / WRX / Dec-25 YTD",
+      "quote": "WRX 1,215 1,797 -32.4% 10,930 18,587 -41.2%",
+      "qualifiers": [
+        "2025 YTD in the December report covers the full calendar year.",
+        "Forester carline covers variants; no engine/ECU calibration coverage is inferred."
+      ],
+      "eligibility_threshold": 50,
+      "comparison": "strictly_greater_than",
+      "eligible_by_reported_sales": true,
+      "quote_normalization": "HTML table cell text joined with single spaces; column meaning is in locator."
+    },
+    {
+      "make": "Renault",
+      "model": "Scenic E-Tech electric",
+      "model_scope": "marketing_model_generation",
+      "region": "EUROPE",
+      "country": null,
+      "calendar_year": 2025,
+      "metric": "sales",
+      "units": 38111,
+      "source_id": "renault_2025_world",
+      "locator": "Our European best sellers | product highlights / Scenic E-Tech electric",
+      "quote": "Scenic E-Tech electric recorded 38,111 sales in Europe (+58.1% vs. 2024).",
+      "qualifiers": [
+        "Europe is the manufacturer-reported geographic scope; no EU-only country breakdown supplied.",
+        "Count covers model, not an engine/ECU or model-year variant."
+      ],
+      "eligibility_threshold": 50,
+      "comparison": "strictly_greater_than",
+      "eligible_by_reported_sales": true
+    },
+    {
+      "make": "Renault",
+      "model": "Trafic",
+      "source_model_label": "Trafic",
+      "model_scope": "light_commercial_model_family",
+      "region": "EUROPE",
+      "country": "FR",
+      "calendar_year": 2025,
+      "metric": "sales",
+      "units": 30744,
+      "source_id": "renault_fr_2025",
+      "locator": "Sur le marché VU / Trafic",
+      "quote": "Trafic est le véhicule utilitaire le plus vendu en France avec 30 744 unités.",
+      "qualifiers": [
+        "Country FR is a subset of Europe. This is NOT a Europe total.",
+        "Kangoo VAN denotes the LCV scope of the paragraph; not passenger Kangoo.",
+        "Article year and market: Résultats commerciaux 2025 ... marché français. Section Sur le marché VU states véhicules vendus and podium des ventes."
+      ],
+      "eligibility_threshold": 50,
+      "comparison": "strictly_greater_than",
+      "eligible_by_reported_sales": true
+    },
+    {
+      "make": "Renault",
+      "model": "Master",
+      "source_model_label": "Master",
+      "model_scope": "light_commercial_model_family",
+      "region": "EUROPE",
+      "country": "FR",
+      "calendar_year": 2025,
+      "metric": "sales",
+      "units": 28406,
+      "source_id": "renault_fr_2025",
+      "locator": "Sur le marché VU / Master",
+      "quote": "Master est n°2 avec 28 406 unités.",
+      "qualifiers": [
+        "Country FR is a subset of Europe. This is NOT a Europe total.",
+        "Kangoo VAN denotes the LCV scope of the paragraph; not passenger Kangoo.",
+        "Article year and market: Résultats commerciaux 2025 ... marché français. Section Sur le marché VU states véhicules vendus and podium des ventes."
+      ],
+      "eligibility_threshold": 50,
+      "comparison": "strictly_greater_than",
+      "eligible_by_reported_sales": true
+    }
+  ],
+  "technical_findings": {
+    "verified_oem_numeric_sensor_thresholds": [],
+    "verified_oem_dtc_mappings": [],
+    "status": "unavailable_for_selected_variants",
+    "limitations": [
+      "No exact 2025 engine/ECU variant and operating-condition manufacturer thresholds verified in this research.",
+      "Do not insert generic ranges as factory limits.",
+      "No exhaustive SAE/ISO or OEM DTC catalogue licence obtained.",
+      "Old Renault e-guide model URLs redirect to a generic user manual page and do not verify a model-specific manual.",
+      "Subaru owners resource landing page is public but does not by itself establish applicability of an exact 2025 Forester manual."
+    ]
+  },
+  "excluded_evidence": [
+    {
+      "url": "https://pressroom.toyota.com/toyota-motor-north-america-reports-2025-u-s-sales-results/",
+      "reason": "HTTP403 Cloudflare challenge; not verified and not bypassed"
+    },
+    {
+      "url": "https://newsroom.toyota.eu/toyota-motor-europe-posts-all-time-record-sales-of-1229000-vehicles-in-2025/",
+      "reason": "Verified official table but TME scope includes Israel, Turkey and Central Asian markets; not used as a pure Europe sales total"
+    },
+    {
+      "source_id": "renault_2025_world",
+      "model": "Kangoo VAN",
+      "units": 63900,
+      "reason": "LCV section mixes global and Europe/Latin America facts; use unambiguous France24405 instead"
+    },
+    {
+      "model": "Scenic E-Tech electric",
+      "units": 38111,
+      "source_id": "renault_2025_world",
+      "reason": "Verified alternative Europe sales model; not among selected three. This is Scenic, NOT Megane."
+    }
+  ]
+}

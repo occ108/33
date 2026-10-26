@@ -1,0 +1,24 @@
+{
+  "profile": "diagnostic",
+  "status": "not_ready",
+  "blockers": [
+    "no_verified_variants",
+    "no_verified_oem_thresholds",
+    "no_documented_model_diagnostics",
+    "complete_europe_us_sales_denominator_not_verified"
+  ],
+  "coverage": {
+    "schema_version": "1",
+    "dataset_kind": "curated",
+    "as_of": "2026-10-26",
+    "region_policy": "europe-us-v1",
+    "bundle_sha256": "49ed9245d7c27894506c3c1ca737c4e2528466f24e2d5c27f9ced3ba37cb991a",
+    "models": 14,
+    "eligible_models": 14,
+    "verified_variants": 0,
+    "verified_thresholds": 0,
+    "documented_diagnostics": 0,
+    "dtc_definitions": 0,
+    "dtc_regulatory_categories": 3
+  }
+}

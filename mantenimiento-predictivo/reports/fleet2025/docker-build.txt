@@ -1,0 +1,29 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.fleet-validation
+#1 transferring dockerfile: 518B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/mantenimiento-predictivo:manual-fabricantes
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 472B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 36.98kB done
+#4 DONE 0.0s
+
+#5 [stage-0 1/2] FROM docker.io/library/mantenimiento-predictivo:manual-fabricantes
+#5 CACHED
+
+#6 [stage-0 2/2] RUN --mount=type=bind,target=/review,ro  cp /review/app.py /review/fleet_catalog.py /review/fleet_resources.py /app/ &&  cp -R /review/catalog/fleet2025 /app/catalog/ &&  cp -R /review/schemas /app/ &&  cp /review/locales/*.toml /app/locales/ &&  chmod -R a+rX /app/catalog/fleet2025 /app/schemas /app/locales &&  chmod a+r /app/app.py /app/fleet_catalog.py /app/fleet_resources.py
+#6 DONE 4.3s
+
+#7 exporting to image
+#7 exporting layers
+#7 exporting layers 0.4s done
+#7 writing image sha256:7889d197b545a1c6b14bab171c4d44517ef01e355a13526f6200640cd731befc done
+#7 naming to docker.io/library/mantenimiento-predictivo:fleet2025-validation done
+#7 DONE 0.4s

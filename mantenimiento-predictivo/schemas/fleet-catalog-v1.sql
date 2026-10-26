@@ -1,0 +1,21 @@
+PRAGMA foreign_keys=ON;
+CREATE TABLE metadata (key TEXT PRIMARY KEY, value TEXT NOT NULL) STRICT;
+CREATE TABLE source (id TEXT PRIMARY KEY, title TEXT NOT NULL, url TEXT NOT NULL CHECK(url LIKE 'https://%'), reuse TEXT NOT NULL, payload TEXT NOT NULL CHECK(json_valid(payload))) STRICT;
+CREATE TABLE model (id TEXT PRIMARY KEY, make TEXT NOT NULL, name TEXT NOT NULL, vehicle_class TEXT NOT NULL, source_id TEXT NOT NULL REFERENCES source(id), payload TEXT NOT NULL CHECK(json_valid(payload)), UNIQUE(make,name)) STRICT;
+CREATE TABLE variant (id TEXT PRIMARY KEY, model_id TEXT NOT NULL REFERENCES model(id), market TEXT NOT NULL, model_year INTEGER, engine_code TEXT, generation TEXT, verification TEXT NOT NULL, payload TEXT NOT NULL CHECK(json_valid(payload))) STRICT;
+CREATE TABLE sale (id TEXT PRIMARY KEY, model_id TEXT NOT NULL REFERENCES model(id), source_id TEXT NOT NULL REFERENCES source(id), year INTEGER NOT NULL, market TEXT NOT NULL, metric TEXT NOT NULL CHECK(metric IN ('sales','registrations','deliveries')), units INTEGER NOT NULL CHECK(units>=0), eligible INTEGER NOT NULL CHECK(eligible IN (0,1)), reason TEXT NOT NULL, payload TEXT NOT NULL CHECK(json_valid(payload))) STRICT;
+CREATE TABLE parameter (id TEXT PRIMARY KEY, unit TEXT NOT NULL, payload TEXT NOT NULL CHECK(json_valid(payload))) STRICT;
+CREATE TABLE dtc (id TEXT PRIMARY KEY, code TEXT NOT NULL, namespace TEXT NOT NULL CHECK(namespace IN ('generic','manufacturer')), make TEXT, source_id TEXT REFERENCES source(id), verification TEXT NOT NULL, payload TEXT NOT NULL CHECK(json_valid(payload)), CHECK(namespace!='manufacturer' OR make IS NOT NULL)) STRICT;
+CREATE TABLE fault (id TEXT PRIMARY KEY, category TEXT NOT NULL CHECK(category IN ('mechanical','electrical','thermal','predictive','dtc')), payload TEXT NOT NULL CHECK(json_valid(payload))) STRICT;
+CREATE TABLE coverage (id TEXT PRIMARY KEY, variant_id TEXT NOT NULL REFERENCES variant(id), fault_id TEXT NOT NULL REFERENCES fault(id), status TEXT NOT NULL CHECK(status IN ('documented','missing_oem')), source_id TEXT REFERENCES source(id), payload TEXT NOT NULL CHECK(json_valid(payload)), UNIQUE(variant_id,fault_id)) STRICT;
+CREATE TABLE coverage_dtc (coverage_id TEXT NOT NULL REFERENCES coverage(id), dtc_id TEXT NOT NULL REFERENCES dtc(id), PRIMARY KEY(coverage_id,dtc_id)) STRICT;
+CREATE TABLE coverage_parameter (coverage_id TEXT NOT NULL REFERENCES coverage(id), parameter_id TEXT NOT NULL REFERENCES parameter(id), PRIMARY KEY(coverage_id,parameter_id)) STRICT;
+CREATE TABLE threshold (id TEXT PRIMARY KEY, variant_id TEXT NOT NULL REFERENCES variant(id), parameter_id TEXT NOT NULL REFERENCES parameter(id), unit TEXT NOT NULL, condition TEXT NOT NULL, lower_value REAL, upper_value REAL, status TEXT NOT NULL CHECK(status IN ('verified','missing_oem')), source_id TEXT REFERENCES source(id), valid_from TEXT NOT NULL, valid_until TEXT NOT NULL, payload TEXT NOT NULL CHECK(json_valid(payload)), CHECK(lower_value IS NULL OR upper_value IS NULL OR lower_value<upper_value), CHECK(status!='verified' OR (source_id IS NOT NULL AND (lower_value IS NOT NULL OR upper_value IS NOT NULL))), UNIQUE(variant_id,parameter_id,condition,valid_from,valid_until)) STRICT;
+CREATE INDEX idx_model_lookup ON model(make,name);
+CREATE INDEX idx_variant_lookup ON variant(model_id,market,model_year,engine_code);
+CREATE INDEX idx_sale_eligible ON sale(eligible,year,model_id);
+CREATE INDEX idx_dtc_lookup ON dtc(code,namespace,make);
+CREATE INDEX idx_coverage_variant ON coverage(variant_id,status);
+CREATE INDEX idx_threshold_lookup ON threshold(variant_id,parameter_id,condition,status);
+
+CREATE UNIQUE INDEX idx_parameter_column ON parameter(json_extract(payload,'$.column'));

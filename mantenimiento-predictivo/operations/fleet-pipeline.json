@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "mode": "offline_reviewed_catalogue",
+  "deployed_scheduler": false,
+  "genie_connected": false,
+  "zzzops_initialized": false,
+  "single_writer": true,
+  "stages": [
+    "review_source_scope_and_reuse_rights",
+    "curate_model_level_calendar_year_sales",
+    "validate_json_schema_and_semantics",
+    "build_staging_sqlite_with_foreign_keys_and_indices",
+    "integrity_check_and_fsync",
+    "atomic_local_catalogue_replace",
+    "run_regression_tests_and_preview_release_gate",
+    "review_diff_and_coverage_manifest",
+    "deploy_only_after_review_and_authorization",
+    "public_smoke_check_and_record_data_hash"
+  ],
+  "source_domains_reviewed": ["media.renault.com", "media.subaru.com", "www.ecfr.gov"],
+  "commands": {
+    "build": "python scripts/build_fleet_catalog.py",
+    "test": "python -m unittest discover -s tests -v",
+    "preview_gate": "python scripts/check_fleet_release.py --profile preview",
+    "full_diagnostic_gate": "python scripts/check_fleet_release.py --profile diagnostic"
+  },
+  "refresh_proposal": "Weekly check for changed authorized sources; annual eligibility rollover on January 1. Not installed or running.",
+  "release_blockers": [
+    "complete_europe_us_model_sales_denominator_not_verified",
+    "exact_variant_technical_sources_and_licenses_missing",
+    "manufacturer_specific_dtc_catalogue_not_licensed_or_verified",
+    "predictive_sensor_thresholds_not_calibrated_or_oem_verified"
+  ]
+}
